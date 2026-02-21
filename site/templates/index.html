@@ -1,0 +1,184 @@
+{% extends "base.html" %}
+
+{% block structured_data %}
+{# ── WebSite JSON-LD + SearchAction ── #}
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Connect-Sekai",
+    "url": "{{ site_url|default('https://connect-sekai.com') }}",
+    "description": "日本とUAE・サウジアラビア・ブルネイを繋ぐビジネスメディア",
+    "inLanguage": ["ja", "en", "ar"],
+    "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": "{{ site_url|default('https://connect-sekai.com') }}/search?q={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+    }
+}
+</script>
+{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="container">
+        <h1>Connect<span class="logo-accent">-</span>Sekai</h1>
+        <p>{% if lang == 'ja' %}日本とUAE・サウジアラビア・ブルネイを繋ぐビジネスメディア{% elif lang == 'ar' %}منصة إعلامية تربط اليابان بالإمارات والسعودية وبروناي{% else %}Business Media Bridging Japan with UAE, Saudi Arabia &amp; Brunei{% endif %}</p>
+    </div>
+</section>
+
+{# ── AIO用：サイト紹介テキスト ── #}
+<section class="section section-intro">
+    <div class="container">
+        <div class="site-summary">
+            {% if lang == 'ja' %}
+            <p>Connect-Sekaiは、日本の投資家・経営者に向けてUAE・サウジアラビア・ブルネイの最新ビジネス・経済・文化情報を専門編集チームが収集・分析・配信するメディアプラットフォームです。中東・東南アジアの成長市場への進出を検討する方に、信頼性の高い情報と深い洞察を提供します。</p>
+            {% elif lang == 'ar' %}
+            <p>كونكت-نيكسس هي منصة إعلامية متخصصة تجمع وتحلل وتوزع أحدث المعلومات حول الأعمال والاقتصاد والثقافة في الإمارات والسعودية وبروناي للمستثمرين ورجال الأعمال اليابانيين.</p>
+            {% else %}
+            <p>Connect-Sekai is a specialist media platform with a dedicated editorial team that collects, analyzes, and delivers the latest business, economic, and cultural information about the UAE, Saudi Arabia, and Brunei for Japanese investors and business leaders exploring growth markets in the Middle East and Southeast Asia.</p>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+{# ── エリアカード ── #}
+<section class="section">
+    <div class="container">
+        <h2 class="section-title">{% if lang == 'ja' %}エリア{% elif lang == 'ar' %}المناطق{% else %}Regions{% endif %}</h2>
+        <div class="grid grid-4">
+            <a href="{{ base_path }}uae/" class="card country-card country-card--uae">
+                <div class="country-card-icon" aria-hidden="true">&#127462;&#127466;</div>
+                <h3>Connect UAE</h3>
+                <p>{% if lang == 'ja' %}投資・不動産・ラグジュアリー{% else %}Investment, Real Estate & Luxury{% endif %}</p>
+                <span class="badge badge-uae" style="margin-top:.75rem;">UAE</span>
+                <span class="country-card-more">{% if lang == 'ja' %}もっと見る{% elif lang == 'ar' %}المزيد{% else %}View more{% endif %} &rarr;</span>
+            </a>
+            <a href="{{ base_path }}saudi/" class="card country-card country-card--saudi">
+                <div class="country-card-icon" aria-hidden="true">&#127480;&#127462;</div>
+                <h3>Connect Saudi</h3>
+                <p>{% if lang == 'ja' %}ビジョン2030・メガプロジェクト{% else %}Vision 2030 & Mega Projects{% endif %}</p>
+                <span class="badge badge-saudi" style="margin-top:.75rem;">SAUDI</span>
+                <span class="country-card-more">{% if lang == 'ja' %}もっと見る{% elif lang == 'ar' %}المزيد{% else %}View more{% endif %} &rarr;</span>
+            </a>
+            <a href="{{ base_path }}brunei/" class="card country-card country-card--brunei">
+                <div class="country-card-icon" aria-hidden="true">&#127463;&#127475;</div>
+                <h3>Connect Brunei</h3>
+                <p>{% if lang == 'ja' %}王室・ハラール×日本・工芸{% else %}Royal Heritage, Halal & Craftsmanship{% endif %}</p>
+                <span class="badge badge-brunei" style="margin-top:.75rem;">BRUNEI</span>
+                <span class="country-card-more">{% if lang == 'ja' %}もっと見る{% elif lang == 'ar' %}المزيد{% else %}View more{% endif %} &rarr;</span>
+            </a>
+            <a href="{{ base_path }}japan/" class="card country-card country-card--japan">
+                <div class="country-card-icon" aria-hidden="true">&#127471;&#127477;</div>
+                <h3>Connect Japan</h3>
+                <p>{% if lang == 'ja' %}ビジネス・テクノロジー・アニメ・漫画{% else %}Business, Technology, Anime & Manga{% endif %}</p>
+                <span class="badge badge-japan" style="margin-top:.75rem;">JAPAN</span>
+                <span class="country-card-more">{% if lang == 'ja' %}もっと見る{% elif lang == 'ar' %}المزيد{% else %}View more{% endif %} &rarr;</span>
+            </a>
+        </div>
+    </div>
+</section>
+
+{# ── ツールセクション ── #}
+<section class="section">
+    <div class="container">
+        <h2 class="section-title">{% if lang == 'ja' %}シミュレーター &amp; ツール{% elif lang == 'ar' %}أدوات المحاكاة{% else %}Simulators &amp; Tools{% endif %}</h2>
+        <div class="grid grid-4">
+            <a href="{{ base_path }}tools/tax-simulator.html" class="card tool-card tool-card--tax">
+                <div class="tool-card-icon">&#128176;</div>
+                <h3>{% if lang == 'ja' %}税金シミュレーター{% elif lang == 'ar' %}محاكي الضرائب{% else %}Tax Simulator{% endif %}</h3>
+                <p>{% if lang == 'ja' %}日本 vs UAE vs サウジの税負担比較{% else %}Compare tax burdens{% endif %}</p>
+                <span class="tool-card-cta">{% if lang == 'ja' %}使ってみる{% else %}Try it{% endif %} &rarr;</span>
+            </a>
+            <a href="{{ base_path }}tools/golden-visa.html" class="card tool-card tool-card--visa">
+                <div class="tool-card-icon">&#127758;</div>
+                <h3>{% if lang == 'ja' %}ビザ診断{% elif lang == 'ar' %}تشخيص التأشيرة{% else %}Visa Checker{% endif %}</h3>
+                <p>{% if lang == 'ja' %}ゴールデンビザ取得可能性を診断{% else %}Check visa eligibility{% endif %}</p>
+                <span class="tool-card-cta">{% if lang == 'ja' %}診断する{% else %}Check{% endif %} &rarr;</span>
+            </a>
+            <a href="{{ base_path }}tools/real-estate-roi.html" class="card tool-card tool-card--realestate">
+                <div class="tool-card-icon">&#127968;</div>
+                <h3>{% if lang == 'ja' %}不動産ROI{% elif lang == 'ar' %}عائد العقارات{% else %}Real Estate ROI{% endif %}</h3>
+                <p>{% if lang == 'ja' %}ドバイ vs 東京 投資リターン比較{% else %}Compare investment returns{% endif %}</p>
+                <span class="tool-card-cta">{% if lang == 'ja' %}計算する{% else %}Calculate{% endif %} &rarr;</span>
+            </a>
+            <a href="{{ base_path }}tools/cost-of-living.html" class="card tool-card tool-card--cost">
+                <div class="tool-card-icon">&#128200;</div>
+                <h3>{% if lang == 'ja' %}生活コスト比較{% elif lang == 'ar' %}تكاليف المعيشة{% else %}Cost of Living{% endif %}</h3>
+                <p>{% if lang == 'ja' %}東京 vs ドバイ vs リヤド{% else %}Tokyo vs Dubai vs Riyadh{% endif %}</p>
+                <span class="tool-card-cta">{% if lang == 'ja' %}比較する{% else %}Compare{% endif %} &rarr;</span>
+            </a>
+        </div>
+    </div>
+</section>
+
+{# ── ニュースレター購読セクション ── #}
+<section class="section newsletter-section">
+    <div class="container">
+        <div class="newsletter-section-inner">
+            <h2 class="newsletter-section-title">{% if lang == 'ja' %}Connect-Sekaiの最新情報を受け取る{% elif lang == 'ar' %}احصل على آخر أخبار Connect-Sekai{% else %}Get the latest from Connect-Sekai{% endif %}</h2>
+            <p class="newsletter-section-desc">{% if lang == 'ja' %}毎日の最新記事をメールでお届けします。登録は無料です。{% elif lang == 'ar' %}نرسل لك أحدث المقالات يوميا مجانا{% else %}Receive the latest articles daily. Free to subscribe.{% endif %}</p>
+            <div class="newsletter-section-form-wrap">
+                <form class="subscribe-form subscribe-form--section" onsubmit="return handleSubscribe(event, this)">
+                    <input type="email" name="email" placeholder="{% if lang == 'ja' %}メールアドレスを入力{% elif lang == 'ar' %}أدخل بريدك الإلكتروني{% else %}Enter your email{% endif %}" required autocomplete="email" class="subscribe-input">
+                    <button type="submit" class="subscribe-btn">{% if lang == 'ja' %}無料で購読{% elif lang == 'ar' %}اشترك مجانا{% else %}Subscribe Free{% endif %}</button>
+                </form>
+            </div>
+            <p class="newsletter-section-or">{% if lang == 'ja' %}または WhatsApp チャンネルで受け取る{% elif lang == 'ar' %}أو عبر قناة واتساب{% else %}Or get it on WhatsApp{% endif %}</p>
+            <a href="https://whatsapp.com/channel/PLACEHOLDER" target="_blank" rel="noopener noreferrer" class="whatsapp-btn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                <span>WhatsApp {% if lang == 'ja' %}チャンネルで受け取る{% elif lang == 'ar' %}القناة{% else %}Channel{% endif %}</span>
+            </a>
+        </div>
+    </div>
+</section>
+
+{# ── 最新記事セクション ── #}
+{% if articles %}
+<section class="section">
+    <div class="container">
+        <h2 class="section-title">{% if lang == 'ja' %}最新記事{% elif lang == 'ar' %}أحدث المقالات{% else %}Latest Articles{% endif %}</h2>
+        <div class="grid grid-3">
+            {% for article in articles[:9] %}
+            <a href="{{ base_path }}{{ article.country }}/article-{{ article.id }}.html" class="card">
+                {% if article.image_path and article.image_path != '[placeholder]' %}
+                <img src="{{ base_path }}images/{{ article.country }}-{{ article.id }}{{ article.image_ext|default('.jpg') }}" alt="{{ article.title }}" class="card-img" loading="lazy" width="400" height="225">
+                {% else %}
+                <div class="card-img" role="img" aria-label="{{ article.title }}"></div>
+                {% endif %}
+                <div class="card-body">
+                    <h3>{{ article.title }}</h3>
+                    <p>{{ article.excerpt }}</p>
+                    <div class="card-meta">
+                        <span class="badge badge-{{ article.country }}">{{ article.country|upper }}</span>
+                        {% if article.genre and genres %}
+                        {% set g = genres[article.genre] if article.genre in genres else {} %}
+                        <span class="badge badge-genre-{{ g.slug|default('business') }}">{{ g.name_ja if lang|default('ja') == 'ja' else g.name_en|default(g.name_ja|default('')) }}</span>
+                        {% endif %}
+                        <time datetime="{{ article.created_at[:10] }}">{{ article.created_at[:10] }}</time>
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+
+        {# ── 各国への「もっと見る」リンク ── #}
+        <div class="more-links">
+            <a href="{{ base_path }}uae/" class="more-link more-link--uae">UAE {% if lang == 'ja' %}の記事をもっと見る{% else %}articles{% endif %} &rarr;</a>
+            <a href="{{ base_path }}saudi/" class="more-link more-link--saudi">Saudi {% if lang == 'ja' %}の記事をもっと見る{% else %}articles{% endif %} &rarr;</a>
+            <a href="{{ base_path }}brunei/" class="more-link more-link--brunei">Brunei {% if lang == 'ja' %}の記事をもっと見る{% else %}articles{% endif %} &rarr;</a>
+            <a href="{{ base_path }}japan/" class="more-link more-link--japan">Japan {% if lang == 'ja' %}の記事をもっと見る{% else %}articles{% endif %} &rarr;</a>
+        </div>
+    </div>
+</section>
+{% else %}
+<section class="section">
+    <div class="container">
+        <p class="placeholder">{% if lang == 'ja' %}記事はまだありません。{% elif lang == 'ar' %}لا توجد مقالات بعد.{% else %}No articles yet.{% endif %}</p>
+    </div>
+</section>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="{{ lang|default('ja') }}" dir="{{ 'rtl' if lang == 'ar' else 'ltr' }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }} | Connect-Sekai</title>
+    <meta name="description" content="{{ description|default('') }}">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+
+    {# ── Canonical & hreflang ── #}
+    <link rel="canonical" href="{{ canonical_url|default(site_url|default('https://connect-sekai.com')) }}">
+    <link rel="alternate" hreflang="ja" href="{{ (site_url|default('https://connect-sekai.com')) ~ '/ja/' ~ (lang_path|default('')) }}">
+    <link rel="alternate" hreflang="en" href="{{ (site_url|default('https://connect-sekai.com')) ~ '/en/' ~ (lang_path|default('')) }}">
+    <link rel="alternate" hreflang="ar" href="{{ (site_url|default('https://connect-sekai.com')) ~ '/ar/' ~ (lang_path|default('')) }}">
+    <link rel="alternate" hreflang="x-default" href="{{ (site_url|default('https://connect-sekai.com')) ~ '/ja/' ~ (lang_path|default('')) }}">
+
+    {# ── Open Graph (完全版) ── #}
+    <meta property="og:type" content="{{ 'article' if page_type|default('website') == 'article' else 'website' }}">
+    <meta property="og:title" content="{{ title }}">
+    <meta property="og:description" content="{{ description|default('') }}">
+    <meta property="og:image" content="{{ og_image|default((site_url|default('https://connect-sekai.com')) ~ '/images/og-default.png') }}">
+    <meta property="og:url" content="{{ canonical_url|default(site_url|default('https://connect-sekai.com')) }}">
+    <meta property="og:site_name" content="Connect-Sekai">
+    <meta property="og:locale" content="{{ 'ja_JP' if lang|default('ja') == 'ja' else ('ar_AE' if lang == 'ar' else 'en_US') }}">
+
+    {# ── Twitter Card ── #}
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ title }}">
+    <meta name="twitter:description" content="{{ description|default('') }}">
+    <meta name="twitter:image" content="{{ og_image|default((site_url|default('https://connect-sekai.com')) ~ '/images/og-default.png') }}">
+
+    {# ── Favicon ── #}
+    <link rel="icon" href="{{ base_path }}favicon.ico" sizes="any">
+    <link rel="icon" href="{{ base_path }}images/favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="{{ base_path }}images/apple-touch-icon.png">
+
+    {# ── Preconnect & Fonts ── #}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="{{ base_path }}css/style.css">
+
+    {# ── JSON-LD: Organization (全ページ共通) ── #}
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Connect-Sekai",
+        "url": "{{ site_url|default('https://connect-sekai.com') }}",
+        "logo": "{{ site_url|default('https://connect-sekai.com') }}/images/logo.png",
+        "description": "日本とUAE・サウジアラビア・ブルネイを繋ぐビジネスメディア",
+        "sameAs": []
+    }
+    </script>
+
+    {# ── JSON-LD: BreadcrumbList (パンくず) ── #}
+    {% if breadcrumbs|default([]) %}
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {% for crumb in breadcrumbs %}
+            {
+                "@type": "ListItem",
+                "position": {{ loop.index }},
+                "name": "{{ crumb.name }}",
+                "item": "{{ crumb.url }}"
+            }{% if not loop.last %},{% endif %}
+            {% endfor %}
+        ]
+    }
+    </script>
+    {% endif %}
+
+    {# ── ページ固有の構造化データ ── #}
+    {% block structured_data %}{% endblock %}
+
+    {# ── ページ固有のhead追加 ── #}
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+    {% include 'header.html' %}
+    <main id="main-content">
+        {% block content %}{% endblock %}
+    </main>
+    {% include 'footer.html' %}
+
+    {# ── ニュースレター購読バー (全ページ共通) ── #}
+    <div class="newsletter-bar" id="newsletter-bar">
+        <div class="container newsletter-bar-inner">
+            <p class="newsletter-bar-text">{% if lang == 'ja' %}最新ニュースをメールでお届け{% elif lang == 'ar' %}احصل على آخر الأخبار عبر البريد{% else %}Get the latest news by email{% endif %}</p>
+            <form class="subscribe-form subscribe-form--bar" onsubmit="return handleSubscribe(event, this)">
+                <input type="email" name="email" placeholder="{% if lang == 'ja' %}メールアドレス{% elif lang == 'ar' %}البريد الإلكتروني{% else %}Email address{% endif %}" required autocomplete="email" class="subscribe-input">
+                <button type="submit" class="subscribe-btn">{% if lang == 'ja' %}購読する{% elif lang == 'ar' %}اشتراك{% else %}Subscribe{% endif %}</button>
+            </form>
+            <a href="https://whatsapp.com/channel/PLACEHOLDER" target="_blank" rel="noopener noreferrer" class="whatsapp-btn whatsapp-btn--small" aria-label="WhatsApp">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                <span>WhatsApp</span>
+            </a>
+            <button class="newsletter-bar-close" onclick="closeNewsletterBar()" aria-label="{% if lang == 'ja' %}閉じる{% else %}Close{% endif %}">&times;</button>
+        </div>
+    </div>
+
+    {# ── ハンバーガーメニュー JS ── #}
+    <script>
+    (function(){
+        var btn = document.querySelector('.mobile-menu-btn');
+        var menu = document.querySelector('.mobile-menu');
+        var overlay = document.querySelector('.mobile-menu-overlay');
+        if (!btn || !menu) return;
+        function toggle() {
+            var expanded = btn.getAttribute('aria-expanded') === 'true';
+            btn.setAttribute('aria-expanded', String(!expanded));
+            menu.classList.toggle('is-open');
+            if (overlay) overlay.classList.toggle('is-open');
+            document.body.classList.toggle('menu-open');
+        }
+        btn.addEventListener('click', toggle);
+        if (overlay) overlay.addEventListener('click', toggle);
+    })();
+    {# ── FAQ アコーディオン JS ── #}
+    document.querySelectorAll('.faq-question').forEach(function(q){
+        q.addEventListener('click', function(){
+            var item = this.parentElement;
+            var expanded = this.getAttribute('aria-expanded') === 'true';
+            this.setAttribute('aria-expanded', String(!expanded));
+            item.classList.toggle('is-open');
+        });
+    });
+
+    {# ── ニュースレター購読 JS ── #}
+    function handleSubscribe(e, form) {
+        e.preventDefault();
+        var emailInput = form.querySelector('input[name="email"]');
+        var email = emailInput.value.trim();
+        if (!email) return false;
+
+        var btn = form.querySelector('button[type="submit"]');
+        var origText = btn.textContent;
+        btn.textContent = '...';
+        btn.disabled = true;
+
+        fetch('/api/subscribe', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({email: email, source: 'web'})
+        })
+        .then(function(res) { return res.json(); })
+        .then(function(data) {
+            var msgEl = form.parentElement.querySelector('.subscribe-message');
+            if (!msgEl) {
+                msgEl = document.createElement('p');
+                msgEl.className = 'subscribe-message';
+                form.parentElement.insertBefore(msgEl, form.nextSibling);
+            }
+            if (data.success) {
+                msgEl.className = 'subscribe-message subscribe-success';
+                msgEl.textContent = data.message;
+                emailInput.value = '';
+            } else {
+                msgEl.className = 'subscribe-message subscribe-error';
+                msgEl.textContent = data.message;
+            }
+            btn.textContent = origText;
+            btn.disabled = false;
+            setTimeout(function() { msgEl.textContent = ''; }, 5000);
+        })
+        .catch(function() {
+            btn.textContent = origText;
+            btn.disabled = false;
+            var msgEl = form.parentElement.querySelector('.subscribe-message');
+            if (!msgEl) {
+                msgEl = document.createElement('p');
+                msgEl.className = 'subscribe-message subscribe-error';
+                form.parentElement.insertBefore(msgEl, form.nextSibling);
+            }
+            msgEl.className = 'subscribe-message subscribe-error';
+            msgEl.textContent = '通信エラーが発生しました。しばらく後にお試しください。';
+            setTimeout(function() { msgEl.textContent = ''; }, 5000);
+        });
+        return false;
+    }
+
+    function closeNewsletterBar() {
+        var bar = document.getElementById('newsletter-bar');
+        if (bar) {
+            bar.style.display = 'none';
+            try { sessionStorage.setItem('newsletter-bar-closed', '1'); } catch(e) {}
+        }
+    }
+    (function(){
+        try {
+            if (sessionStorage.getItem('newsletter-bar-closed') === '1') {
+                var bar = document.getElementById('newsletter-bar');
+                if (bar) bar.style.display = 'none';
+            }
+        } catch(e) {}
+    })();
+    </script>
+</body>
+</html>

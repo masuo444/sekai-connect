@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block structured_data %}
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "{{ title }}",
+    "description": "{{ description }}",
+    "url": "{{ canonical_url }}",
+    "mainEntity": {
+        "@type": "ItemList",
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "{% if lang == 'ja' %}税金シミュレーター{% elif lang == 'ar' %}محاكي الضرائب{% else %}Tax Simulator{% endif %}",
+                "url": "{{ site_url }}/{% if lang != 'ja' %}{{ lang }}/{% endif %}tools/tax-simulator.html"
+            },
+            {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "{% if lang == 'ja' %}ゴールデンビザ診断{% elif lang == 'ar' %}تشخيص التأشيرة الذهبية{% else %}Golden Visa Checker{% endif %}",
+                "url": "{{ site_url }}/{% if lang != 'ja' %}{{ lang }}/{% endif %}tools/golden-visa.html"
+            },
+            {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "{% if lang == 'ja' %}不動産ROI計算機{% elif lang == 'ar' %}حاسبة عائد الاستثمار العقاري{% else %}Real Estate ROI Calculator{% endif %}",
+                "url": "{{ site_url }}/{% if lang != 'ja' %}{{ lang }}/{% endif %}tools/real-estate-roi.html"
+            },
+            {
+                "@type": "ListItem",
+                "position": 4,
+                "name": "{% if lang == 'ja' %}生活コスト比較{% elif lang == 'ar' %}مقارنة تكاليف المعيشة{% else %}Cost of Living Comparison{% endif %}",
+                "url": "{{ site_url }}/{% if lang != 'ja' %}{{ lang }}/{% endif %}tools/cost-of-living.html"
+            }
+        ]
+    }
+}
+</script>
+{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="container">
+        <h1>{% if lang == 'ja' %}海外移住シミュレーター{% elif lang == 'ar' %}أدوات محاكاة الهجرة{% else %}Relocation Simulators{% endif %}</h1>
+        <p>{% if lang == 'ja' %}UAE・サウジアラビアへの移住を検討する日本人投資家のための実用ツール{% elif lang == 'ar' %}أدوات عملية للمستثمرين اليابانيين الذين يفكرون في الانتقال{% else %}Practical tools for Japanese investors considering relocation to UAE & Saudi Arabia{% endif %}</p>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        <div class="grid grid-2 tools-grid">
+            <a href="{{ base_path }}tools/tax-simulator.html" class="card tool-card tool-card--tax">
+                <div class="tool-card-icon">&#128176;</div>
+                <h2>{% if lang == 'ja' %}税金シミュレーター{% elif lang == 'ar' %}محاكي الضرائب{% else %}Tax Simulator{% endif %}</h2>
+                <p>{% if lang == 'ja' %}日本 vs UAE vs サウジアラビア — 年収別の税負担を比較し、移住による節税額をシミュレーション{% elif lang == 'ar' %}مقارنة الأعباء الضريبية حسب الدخل السنوي{% else %}Compare tax burdens by annual income across Japan, UAE & Saudi Arabia{% endif %}</p>
+                <span class="tool-card-cta">{% if lang == 'ja' %}シミュレーションする{% elif lang == 'ar' %}ابدأ المحاكاة{% else %}Start Simulation{% endif %} &rarr;</span>
+            </a>
+            <a href="{{ base_path }}tools/golden-visa.html" class="card tool-card tool-card--visa">
+                <div class="tool-card-icon">&#127758;</div>
+                <h2>{% if lang == 'ja' %}ゴールデンビザ診断{% elif lang == 'ar' %}تشخيص التأشيرة الذهبية{% else %}Golden Visa Checker{% endif %}</h2>
+                <p>{% if lang == 'ja' %}あなたの資産・職種・投資額からUAEゴールデンビザ・サウジプレミアムレジデンシーの取得可能性を診断{% elif lang == 'ar' %}تحقق من أهليتك للحصول على التأشيرة الذهبية{% else %}Check your eligibility for UAE Golden Visa & Saudi Premium Residency{% endif %}</p>
+                <span class="tool-card-cta">{% if lang == 'ja' %}診断する{% elif lang == 'ar' %}ابدأ التشخيص{% else %}Check Eligibility{% endif %} &rarr;</span>
+            </a>
+            <a href="{{ base_path }}tools/real-estate-roi.html" class="card tool-card tool-card--realestate">
+                <div class="tool-card-icon">&#127968;</div>
+                <h2>{% if lang == 'ja' %}不動産ROI計算機{% elif lang == 'ar' %}حاسبة عائد الاستثمار العقاري{% else %}Real Estate ROI Calculator{% endif %}</h2>
+                <p>{% if lang == 'ja' %}ドバイ・東京の不動産投資リターンを比較 — キャッシュフロー、キャップレート、5年/10年の資産推移{% elif lang == 'ar' %}قارن عوائد الاستثمار العقاري{% else %}Compare real estate investment returns — cash flow, cap rate & asset projections{% endif %}</p>
+                <span class="tool-card-cta">{% if lang == 'ja' %}計算する{% elif lang == 'ar' %}ابدأ الحساب{% else %}Calculate ROI{% endif %} &rarr;</span>
+            </a>
+            <a href="{{ base_path }}tools/cost-of-living.html" class="card tool-card tool-card--cost">
+                <div class="tool-card-icon">&#128200;</div>
+                <h2>{% if lang == 'ja' %}生活コスト比較{% elif lang == 'ar' %}مقارنة تكاليف المعيشة{% else %}Cost of Living Comparison{% endif %}</h2>
+                <p>{% if lang == 'ja' %}東京・ドバイ・リヤドの生活費をカテゴリ別に比較 — スタンダードからラグジュアリーまで3段階{% elif lang == 'ar' %}قارن تكاليف المعيشة بين المدن{% else %}Compare living costs across Tokyo, Dubai & Riyadh — from standard to luxury{% endif %}</p>
+                <span class="tool-card-cta">{% if lang == 'ja' %}比較する{% elif lang == 'ar' %}ابدأ المقارنة{% else %}Compare Now{% endif %} &rarr;</span>
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}

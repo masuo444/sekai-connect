@@ -1,0 +1,204 @@
+# Connect-Sekai 国別設定
+# 各国は独立したメディアブランド（リージョン＋ジャンル構成）
+
+# ──────────────────────────────────────
+# 共通ジャンル定義（全国共通 6 ジャンル）
+# ──────────────────────────────────────
+genres:
+  business:
+    name_ja: "ビジネス"
+    name_en: "Business"
+    slug: "business"
+    keywords: ["investment", "投資", "法人", "company", "business", "ビジネス", "fund", "capital", "IPO", "M&A", "startup"]
+  real-estate:
+    name_ja: "不動産"
+    name_en: "Real Estate"
+    slug: "real-estate"
+    keywords: ["real estate", "不動産", "property", "物件", "housing", "residential", "commercial", "development", "construction"]
+  lifestyle:
+    name_ja: "ライフスタイル"
+    name_en: "Lifestyle"
+    slug: "lifestyle"
+    keywords: ["lifestyle", "移住", "education", "教育", "visa", "ビザ", "migration", "living", "school", "health", "生活"]
+  culture:
+    name_ja: "文化"
+    name_en: "Culture"
+    slug: "culture"
+    keywords: ["culture", "文化", "craft", "工芸", "halal", "ハラール", "tradition", "伝統", "art", "museum", "heritage"]
+  technology:
+    name_ja: "テクノロジー"
+    name_en: "Technology"
+    slug: "technology"
+    keywords: ["technology", "テクノロジー", "AI", "tech", "digital", "blockchain", "crypto", "innovation", "data", "cloud", "semiconductor"]
+  entertainment:
+    name_ja: "エンターテイメント"
+    name_en: "Entertainment"
+    slug: "entertainment"
+    keywords: ["entertainment", "エンタメ", "sport", "スポーツ", "tourism", "観光", "hotel", "ホテル", "event", "festival", "F1", "concert", "movie"]
+
+# ──────────────────────────────────────
+# 国別メディアブランド設定
+# ──────────────────────────────────────
+countries:
+  # ========== UAE ==========
+  uae:
+    name: "Connect UAE"
+    display_name: "Connect UAE - 日本とUAEを繋ぐインテリジェンス・ハブ"
+    languages: ["ja", "en", "ar"]
+    tone: "investment-luxury"
+    description_ja: "UAEの不動産、節税、ラグジュアリーライフスタイル情報を日本の経営者・投資家へ"
+    description_en: "Bridging Japanese craftsmanship and UAE's luxury investment landscape"
+    regions:
+      dubai:
+        name_ja: "ドバイ"
+        name_en: "Dubai"
+      abu_dhabi:
+        name_ja: "アブダビ"
+        name_en: "Abu Dhabi"
+      others:
+        name_ja: "その他UAE"
+        name_en: "Other Emirates"
+    topics:
+      - "real-estate"
+      - "tax-optimization"
+      - "golden-visa"
+      - "luxury-lifestyle"
+      - "business-setup"
+      - "ai-tech"
+      - "entertainment"
+    news_sources:
+      - "https://news.google.com/rss/search?q=UAE+Dubai+Abu+Dhabi+investment+business&hl=en"
+      - "https://news.google.com/rss/search?q=UAE+ドバイ+アブダビ+投資+ビジネス&hl=ja"
+    timezone: "Asia/Dubai"
+    utc_offset: 4
+    prime_times: ["08:00", "12:30", "20:00"]
+    hashtags:
+      ja: ["#UAE", "#ドバイ", "#アブダビ", "#海外投資", "#資産運用", "#移住"]
+      en: ["#UAE", "#Dubai", "#AbuDhabi", "#Investment", "#LuxuryLife", "#UHNWI"]
+      ar: ["#الإمارات", "#دبي", "#أبوظبي", "#استثمار"]
+
+  # ========== Saudi Arabia ==========
+  saudi:
+    name: "Connect Saudi"
+    display_name: "Connect Saudi - 日本とサウジアラビアを繋ぐインテリジェンス・ハブ"
+    languages: ["ja", "en", "ar"]
+    tone: "culture-business"
+    description_ja: "サウジアラビアのビジョン2030、メガプロジェクト、日本文化との融合を発信"
+    description_en: "Where Vision 2030 meets Japanese innovation and tradition"
+    regions:
+      riyadh:
+        name_ja: "リヤド"
+        name_en: "Riyadh"
+      jeddah:
+        name_ja: "ジェッダ"
+        name_en: "Jeddah"
+      neom:
+        name_ja: "NEOM"
+        name_en: "NEOM"
+      others:
+        name_ja: "その他サウジ"
+        name_en: "Other Saudi"
+    topics:
+      - "vision-2030"
+      - "mega-projects"
+      - "japanese-culture"
+      - "halal-business"
+      - "neom"
+      - "entertainment"
+    news_sources:
+      - "https://news.google.com/rss/search?q=Saudi+Arabia+business+Vision+2030+NEOM&hl=en"
+      - "https://news.google.com/rss/search?q=サウジアラビア+ビジネス+投資&hl=ja"
+    timezone: "Asia/Riyadh"
+    utc_offset: 3
+    prime_times: ["09:00", "13:00", "21:00"]
+    hashtags:
+      ja: ["#サウジアラビア", "#ビジョン2030", "#中東ビジネス", "#日本文化", "#NEOM"]
+      en: ["#SaudiArabia", "#Vision2030", "#JapanxSaudi", "#NEOM", "#Luxury"]
+      ar: ["#السعودية", "#رؤية_2030", "#اليابان"]
+
+  # ========== Brunei ==========
+  brunei:
+    name: "Connect Brunei"
+    display_name: "Connect Brunei - 日本とブルネイを繋ぐインテリジェンス・ハブ"
+    languages: ["ja", "en", "ms"]
+    tone: "royal-tradition"
+    description_ja: "ブルネイ王室と日本の伝統工芸が出会う、知られざる富裕国への招待"
+    description_en: "Discover the untold connection between Brunei's royal heritage and Japanese artistry"
+    regions:
+      bandar:
+        name_ja: "バンダルスリブガワン"
+        name_en: "Bandar Seri Begawan"
+      others:
+        name_ja: "その他ブルネイ"
+        name_en: "Other Brunei"
+    topics:
+      - "royal-family"
+      - "halal-japan"
+      - "craftsmanship"
+      - "luxury-lifestyle"
+      - "oil-gas"
+      - "cultural-exchange"
+    news_sources:
+      - "https://news.google.com/rss/search?q=Brunei+business+luxury+royal&hl=en"
+      - "https://news.google.com/rss/search?q=ブルネイ+ビジネス&hl=ja"
+    timezone: "Asia/Brunei"
+    utc_offset: 8
+    prime_times: ["08:00", "12:00", "19:00"]
+    hashtags:
+      ja: ["#ブルネイ", "#東南アジア", "#富裕国", "#王室", "#ハラール"]
+      en: ["#Brunei", "#RoyalLuxury", "#JapanxBrunei", "#ASEAN", "#Halal"]
+      ms: ["#Brunei", "#Jepun", "#Mewah"]
+
+  # ========== Japan ==========
+  japan:
+    name: "Connect Japan"
+    display_name: "Connect Japan - 世界が注目する日本のビジネス・カルチャー"
+    languages: ["ja", "en", "ar"]
+    tone: "japan-premium"
+    description_ja: "日本のビジネス、テクノロジー、不動産、アニメ・漫画を中東・東南アジアの投資家へ"
+    description_en: "Japan's business, technology, real estate, anime & manga for global investors"
+    regions:
+      tokyo:
+        name_ja: "東京"
+        name_en: "Tokyo"
+      osaka:
+        name_ja: "大阪"
+        name_en: "Osaka"
+      others:
+        name_ja: "その他"
+        name_en: "Other Japan"
+    topics:
+      - "business"
+      - "real-estate"
+      - "technology"
+      - "anime-manga"
+      - "lifestyle"
+      - "culture"
+    news_sources:
+      - "https://news.google.com/rss/search?q=Japan+business+investment+technology&hl=en"
+      - "https://news.google.com/rss/search?q=日本+ビジネス+投資+テクノロジー&hl=ja"
+      - "https://news.google.com/rss/search?q=Japan+anime+manga+entertainment&hl=en"
+      - "https://news.google.com/rss/search?q=日本+アニメ+漫画+エンタメ&hl=ja"
+    timezone: "Asia/Tokyo"
+    utc_offset: 9
+    prime_times: ["08:00", "12:00", "20:00"]
+    hashtags:
+      ja: ["#日本", "#ビジネス", "#テクノロジー", "#アニメ", "#漫画", "#投資"]
+      en: ["#Japan", "#JapanBusiness", "#Anime", "#Manga", "#JapanTech", "#Investment"]
+      ar: ["#اليابان", "#أنمي", "#مانغا", "#استثمار"]
+
+# ──────────────────────────────────────
+# FOMUS ステルスブランディング設定
+# ──────────────────────────────────────
+fomus:
+  stealth_mode: true
+  appearance_ratio: 0.2  # 全投稿の20%にFOMUS関連を含める
+  positioning: "Connect-Sekai厳選"
+  contexts:
+    - "伝統工芸"
+    - "ギフト"
+    - "インテリア"
+    - "茶器"
+    - "香りのある空間"
+  avoid_contexts:
+    - "アルコール"  # イスラム圏への配慮

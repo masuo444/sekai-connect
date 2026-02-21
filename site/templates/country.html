@@ -1,0 +1,172 @@
+{% extends "base.html" %}
+
+{% block structured_data %}
+{# ── CollectionPage JSON-LD ── #}
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "{{ country_info.name|default('') }}",
+    "description": "{{ description|default('') }}",
+    "url": "{{ canonical_url|default('') }}",
+    "isPartOf": {
+        "@type": "WebSite",
+        "name": "Connect-Sekai",
+        "url": "{{ site_url|default('https://connect-sekai.com') }}"
+    }
+}
+</script>
+
+{# ── FAQPage JSON-LD (faq_items がある場合) ── #}
+{% if faq_items|default([]) %}
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+        {% for faq in faq_items %}
+        {
+            "@type": "Question",
+            "name": "{{ faq.question }}",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "{{ faq.answer }}"
+            }
+        }{% if not loop.last %},{% endif %}
+        {% endfor %}
+    ]
+}
+</script>
+{% endif %}
+{% endblock %}
+
+{% block content %}
+{# ── パンくずナビゲーション ── #}
+{% if breadcrumbs|default([]) %}
+<nav class="breadcrumb" aria-label="{% if lang == 'ja' %}パンくずリスト{% elif lang == 'ar' %}مسار التنقل{% else %}Breadcrumb{% endif %}">
+    <div class="container">
+        <ol class="breadcrumb-list">
+            {% for crumb in breadcrumbs %}
+            <li class="breadcrumb-item{% if loop.last %} breadcrumb-item--current{% endif %}">
+                {% if loop.last %}
+                <span aria-current="page">{{ crumb.name }}</span>
+                {% else %}
+                <a href="{{ crumb.url }}">{{ crumb.name }}</a>
+                {% endif %}
+            </li>
+            {% endfor %}
+        </ol>
+    </div>
+</nav>
+{% endif %}
+
+<section class="hero hero-{{ country_key }}">
+    <div class="container">
+        <h1>{{ country_info.name }}</h1>
+        <p>{% if lang == 'ja' %}{{ country_info.description }}{% else %}{{ country_info.description_en|default(country_info.description) }}{% endif %}</p>
+    </div>
+</section>
+
+{# ── 国の概要セクション ── #}
+<section class="section country-overview">
+    <div class="container">
+        <div class="country-description">
+            {% if lang == 'ja' %}
+            <p>{{ country_info.description_ja_long|default(country_info.description|default('')) }}</p>
+            {% elif lang == 'ar' %}
+            <p>{{ country_info.description_ar_long|default(country_info.description_ar|default(country_info.description|default(''))) }}</p>
+            {% else %}
+            <p>{{ country_info.description_en_long|default(country_info.description_en|default(country_info.description|default(''))) }}</p>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+{# ── 地域タブ ── #}
+{% if regions %}
+<nav class="sub-nav" role="tablist" aria-label="{% if lang == 'ja' %}地域フィルター{% elif lang == 'ar' %}تصفية المنطقة{% else %}Region filter{% endif %}">
+    <a href="{{ base_path }}{{ country_key }}/" role="tab" aria-selected="{{ 'true' if not current_region else 'false' }}" class="{% if not current_region %}active{% endif %}">
+        {% if lang == 'ja' %}すべて{% elif lang == 'ar' %}الكل{% else %}All{% endif %}
+    </a>
+    {% for key, region in regions.items() %}
+    <a href="{{ base_path }}{{ country_key }}/{{ region.slug }}/" role="tab" aria-selected="{{ 'true' if current_region == key else 'false' }}" class="{% if current_region == key %}active{% endif %}">
+        {{ region.name_ja if lang == 'ja' else region.name_en|default(region.name_ja) }}
+    </a>
+    {% endfor %}
+</nav>
+{% endif %}
+
+{# ── ジャンルタブ ── #}
+<nav class="genre-nav sub-nav" role="tablist" aria-label="{% if lang == 'ja' %}ジャンルフィルター{% elif lang == 'ar' %}تصفية النوع{% else %}Genre filter{% endif %}">
+    <a href="{{ base_path }}{{ country_key }}/{% if current_region %}{{ current_region_slug }}/{% endif %}" role="tab" aria-selected="{{ 'true' if not current_genre else 'false' }}" class="{% if not current_genre %}active{% endif %}">
+        {% if lang == 'ja' %}すべて{% elif lang == 'ar' %}الكل{% else %}All{% endif %}
+    </a>
+    {% for key, genre in genres.items() %}
+    <a href="{{ base_path }}{{ country_key }}/{{ genre.slug }}/" role="tab" aria-selected="{{ 'true' if current_genre == key else 'false' }}" class="{% if current_genre == key %}active{% endif %}">
+        {{ genre.name_ja if lang == 'ja' else genre.name_en|default(genre.name_ja) }}
+    </a>
+    {% endfor %}
+</nav>
+
+{# ── 記事一覧 ── #}
+{% if articles %}
+<section class="section">
+    <div class="container">
+        <h2 class="section-title">{% if lang == 'ja' %}最新記事{% elif lang == 'ar' %}أحدث المقالات{% else %}Latest Articles{% endif %}</h2>
+        <div class="grid grid-3">
+            {% for article in articles %}
+            <a href="{{ base_path }}{{ article.country }}/article-{{ article.id }}.html" class="card">
+                {% if article.image_path and article.image_path != '[placeholder]' %}
+                <img src="{{ base_path }}images/{{ article.country }}-{{ article.id }}{{ article.image_ext|default('.jpg') }}" alt="{{ article.title }}" class="card-img" loading="lazy" width="400" height="225">
+                {% else %}
+                <div class="card-img" role="img" aria-label="{{ article.title }}"></div>
+                {% endif %}
+                <div class="card-body">
+                    <h3>{{ article.title }}</h3>
+                    <p>{{ article.excerpt }}</p>
+                    <div class="card-meta">
+                        <span class="badge badge-{{ article.country }}">{{ article.country|upper }}</span>
+                        {% if article.genre and genres %}
+                        {% set g = genres[article.genre] if article.genre in genres else {} %}
+                        <span class="badge badge-genre-{{ g.slug|default('business') }}">{{ g.name_ja if lang|default('ja') == 'ja' else g.name_en|default(g.name_ja|default('')) }}</span>
+                        {% endif %}
+                        <time datetime="{{ article.created_at[:10] }}">{{ article.created_at[:10] }}</time>
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% else %}
+<section class="section">
+    <div class="container">
+        <p class="placeholder">{% if lang == 'ja' %}この地域の記事はまだありません。{% elif lang == 'ar' %}لا توجد مقالات لهذه المنطقة بعد.{% else %}No articles for this region yet.{% endif %}</p>
+    </div>
+</section>
+{% endif %}
+
+{# ── FAQセクション (AIO対策) ── #}
+{% if faq_items|default([]) %}
+<section class="section faq-section">
+    <div class="container">
+        <h2 class="section-title">{% if lang == 'ja' %}よくある質問{% elif lang == 'ar' %}الأسئلة الشائعة{% else %}Frequently Asked Questions{% endif %}</h2>
+        <div class="faq-list">
+            {% for faq in faq_items %}
+            <div class="faq-item">
+                <button class="faq-question" aria-expanded="false" aria-controls="faq-answer-{{ loop.index }}">
+                    <span>{{ faq.question }}</span>
+                    <svg class="faq-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                        <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+                <div class="faq-answer" id="faq-answer-{{ loop.index }}" role="region">
+                    <p>{{ faq.answer }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+
+{% block structured_data %}
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "{% if lang == 'ja' %}不動産ROI計算機 — ドバイ vs 東京{% else %}Real Estate ROI Calculator — Dubai vs Tokyo{% endif %}",
+    "description": "{{ description }}",
+    "url": "{{ canonical_url }}",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "Web"
+}
+</script>
+{% if faq_items %}
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+        {% for faq in faq_items %}
+        {
+            "@type": "Question",
+            "name": "{{ faq.q }}",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "{{ faq.a }}"
+            }
+        }{% if not loop.last %},{% endif %}
+        {% endfor %}
+    ]
+}
+</script>
+{% endif %}
+{% endblock %}
+
+{% block extra_head %}
+<script src="{{ base_path }}js/tools-common.js" defer></script>
+<script src="{{ base_path }}js/real-estate-roi.js" defer></script>
+{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="container">
+        <h1>{% if lang == 'ja' %}不動産ROI計算機{% elif lang == 'ar' %}حاسبة عائد الاستثمار العقاري{% else %}Real Estate ROI Calculator{% endif %}</h1>
+        <p>{% if lang == 'ja' %}ドバイ vs 東京 — 不動産投資のリターンを比較シミュレーション{% elif lang == 'ar' %}قارن عوائد الاستثمار العقاري بين دبي وطوكيو{% else %}Dubai vs Tokyo — Compare real estate investment returns{% endif %}</p>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        <div class="tool-layout">
+            <div class="tool-form-panel">
+                <h2 class="tool-form-title">{% if lang == 'ja' %}投資条件{% elif lang == 'ar' %}شروط الاستثمار{% else %}Investment Parameters{% endif %}</h2>
+
+                <div class="tool-presets">
+                    <span class="tool-presets-label">{% if lang == 'ja' %}プリセット:{% elif lang == 'ar' %}إعدادات مسبقة:{% else %}Presets:{% endif %}</span>
+                    <button type="button" class="tool-preset-btn" data-preset="dubai">{% if lang == 'ja' %}ドバイ標準{% elif lang == 'ar' %}دبي{% else %}Dubai Standard{% endif %}</button>
+                    <button type="button" class="tool-preset-btn" data-preset="tokyo">{% if lang == 'ja' %}東京標準{% elif lang == 'ar' %}طوكيو{% else %}Tokyo Standard{% endif %}</button>
+                </div>
+
+                <form id="re-form" class="tool-form" onsubmit="return false;">
+                    <div class="tool-field">
+                        <label for="re-price">{% if lang == 'ja' %}物件価格（万円）{% elif lang == 'ar' %}سعر العقار (万円){% else %}Property Price (万円 / 10K JPY){% endif %}</label>
+                        <input type="number" id="re-price" value="5000" min="0" step="500" class="tool-input">
+                    </div>
+                    <div class="tool-field">
+                        <label for="re-yield">{% if lang == 'ja' %}表面利回り（%）{% elif lang == 'ar' %}العائد الإجمالي (%){% else %}Gross Yield (%){% endif %}</label>
+                        <input type="number" id="re-yield" value="6.5" min="0" max="30" step="0.1" class="tool-input">
+                    </div>
+                    <div class="tool-field">
+                        <label for="re-mgmt">{% if lang == 'ja' %}管理費率（%）{% elif lang == 'ar' %}رسوم الإدارة (%){% else %}Management Fee (%){% endif %}</label>
+                        <input type="number" id="re-mgmt" value="3" min="0" max="30" step="0.5" class="tool-input">
+                    </div>
+                    <div class="tool-field">
+                        <label for="re-vacancy">{% if lang == 'ja' %}空室率（%）{% elif lang == 'ar' %}معدل الشغور (%){% else %}Vacancy Rate (%){% endif %}</label>
+                        <input type="number" id="re-vacancy" value="5" min="0" max="50" step="1" class="tool-input">
+                    </div>
+                    <div class="tool-field">
+                        <label for="re-costs">{% if lang == 'ja' %}購入諸費用率（%）{% elif lang == 'ar' %}تكاليف الشراء (%){% else %}Purchase Costs (%){% endif %}</label>
+                        <input type="number" id="re-costs" value="7" min="0" max="30" step="0.5" class="tool-input">
+                    </div>
+                    <div class="tool-field">
+                        <label for="re-appreciation">{% if lang == 'ja' %}年間値上がり率（%）{% elif lang == 'ar' %}معدل الارتفاع السنوي (%){% else %}Annual Appreciation (%){% endif %}</label>
+                        <input type="number" id="re-appreciation" value="5" min="-10" max="30" step="0.5" class="tool-input">
+                    </div>
+                    <button type="button" id="re-calc-btn" class="tool-btn">{% if lang == 'ja' %}計算する{% elif lang == 'ar' %}احسب{% else %}Calculate{% endif %}</button>
+                </form>
+            </div>
+
+            <div class="tool-results-panel" id="re-results" style="display:none;">
+                <div id="re-kpis"></div>
+                <h3>{% if lang == 'ja' %}資産推移（10年間）{% elif lang == 'ar' %}تطور الأصول (10 سنوات){% else %}Asset Projection (10 Years){% endif %}</h3>
+                <div id="re-chart"></div>
+                <h3>{% if lang == 'ja' %}詳細テーブル{% elif lang == 'ar' %}جدول تفصيلي{% else %}Detailed Table{% endif %}</h3>
+                <div id="re-detail"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% if faq_items %}
+<section class="section faq-section">
+    <div class="container">
+        <h2 class="section-title">{% if lang == 'ja' %}よくある質問{% elif lang == 'ar' %}الأسئلة الشائعة{% else %}FAQ{% endif %}</h2>
+        <div class="faq-list">
+            {% for faq in faq_items %}
+            <div class="faq-item">
+                <button class="faq-question" aria-expanded="false">
+                    {{ faq.q }}
+                    <svg class="faq-icon" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                </button>
+                <div class="faq-answer"><p>{{ faq.a }}</p></div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<section class="section">
+    <div class="container">
+        <div class="tool-disclaimer">
+            <p>{% if lang == 'ja' %}※ 本計算機は投資判断の参考としての概算です。不動産市場は変動するため、実際のリターンは異なる場合があります。投資判断は専門家にご相談ください。{% elif lang == 'ar' %}※ هذه الحاسبة تقديرية. يرجى استشارة خبير قبل اتخاذ قرار استثماري.{% else %}※ This calculator provides estimates for reference. Actual returns may vary. Please consult a professional before making investment decisions.{% endif %}</p>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,38 @@
+{# Connect-Sekai English article template #}
+<article class="cn-article cn-article--{{ country }}" lang="en">
+  <header class="cn-article__header">
+    <span class="cn-article__brand">{{ brand_name }}</span>
+    <h1 class="cn-article__title">{{ title }}</h1>
+    <div class="cn-article__meta">
+      <time datetime="{{ published_at }}">{{ published_at_display }}</time>
+      {% if category %}
+      <span class="cn-article__category">{{ category }}</span>
+      {% endif %}
+    </div>
+  </header>
+
+  <div class="cn-article__body">
+    {% for paragraph in body_paragraphs %}
+    <p>{{ paragraph }}</p>
+    {% endfor %}
+
+    {% if fomus_insert %}
+    <aside class="cn-article__curated">
+      <p>{{ fomus_insert }}</p>
+    </aside>
+    {% endif %}
+  </div>
+
+  <footer class="cn-article__footer">
+    {% if hashtags %}
+    <div class="cn-article__tags">
+      {% for tag in hashtags %}
+      <span class="cn-article__tag">{{ tag }}</span>
+      {% endfor %}
+    </div>
+    {% endif %}
+    <p class="cn-article__source">
+      Source: <a href="{{ source_link }}">{{ source_title }}</a>
+    </p>
+  </footer>
+</article>

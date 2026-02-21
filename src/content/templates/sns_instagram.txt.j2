@@ -1,0 +1,16 @@
+{# Connect-Sekai Instagram carousel caption template #}
+{{ caption }}
+
+{% if fomus_insert %}
+---
+{{ fomus_insert }}
+{% endif %}
+
+{% if carousel_slides %}
+📌 Slides:
+{% for slide in carousel_slides %}
+[{{ loop.index }}] {{ slide }}
+{% endfor %}
+{% endif %}
+
+{{ hashtags | join(' ') }}

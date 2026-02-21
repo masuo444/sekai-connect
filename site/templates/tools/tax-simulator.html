@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+
+{% block structured_data %}
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "{% if lang == 'ja' %}税金シミュレーター — 日本 vs UAE vs サウジアラビア{% else %}Tax Simulator — Japan vs UAE vs Saudi Arabia{% endif %}",
+    "description": "{{ description }}",
+    "url": "{{ canonical_url }}",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "Web"
+}
+</script>
+{% if faq_items %}
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+        {% for faq in faq_items %}
+        {
+            "@type": "Question",
+            "name": "{{ faq.q }}",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "{{ faq.a }}"
+            }
+        }{% if not loop.last %},{% endif %}
+        {% endfor %}
+    ]
+}
+</script>
+{% endif %}
+{% endblock %}
+
+{% block extra_head %}
+<script src="{{ base_path }}js/tools-common.js" defer></script>
+<script src="{{ base_path }}js/tax-simulator.js" defer></script>
+{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="container">
+        <h1>{% if lang == 'ja' %}税金シミュレーター{% elif lang == 'ar' %}محاكي الضرائب{% else %}Tax Simulator{% endif %}</h1>
+        <p>{% if lang == 'ja' %}日本 vs UAE vs サウジアラビア — 年収別の税負担を比較{% elif lang == 'ar' %}مقارنة الأعباء الضريبية حسب الدخل{% else %}Japan vs UAE vs Saudi Arabia — Compare tax burdens by income{% endif %}</p>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        <div class="tool-layout">
+            <div class="tool-form-panel">
+                <h2 class="tool-form-title">{% if lang == 'ja' %}条件を入力{% elif lang == 'ar' %}أدخل الشروط{% else %}Enter Details{% endif %}</h2>
+                <form id="tax-form" class="tool-form" onsubmit="return false;">
+                    <div class="tool-field">
+                        <label for="tax-income">{% if lang == 'ja' %}年収（万円）{% elif lang == 'ar' %}الدخل السنوي (万円){% else %}Annual Income (万円 / 10K JPY){% endif %}</label>
+                        <input type="number" id="tax-income" value="1500" min="0" step="100" class="tool-input">
+                    </div>
+                    <div class="tool-field">
+                        <label for="tax-type">{% if lang == 'ja' %}所得種別{% elif lang == 'ar' %}نوع الدخل{% else %}Income Type{% endif %}</label>
+                        <select id="tax-type" class="tool-select">
+                            <option value="salary">{% if lang == 'ja' %}給与所得{% elif lang == 'ar' %}دخل الراتب{% else %}Employment / Salary{% endif %}</option>
+                            <option value="business">{% if lang == 'ja' %}事業所得{% elif lang == 'ar' %}دخل الأعمال{% else %}Business Income{% endif %}</option>
+                            <option value="investment">{% if lang == 'ja' %}投資所得{% elif lang == 'ar' %}دخل الاستثمار{% else %}Investment Income{% endif %}</option>
+                        </select>
+                    </div>
+                    <div class="tool-field">
+                        <label for="tax-family">{% if lang == 'ja' %}家族構成{% elif lang == 'ar' %}الحالة العائلية{% else %}Family Status{% endif %}</label>
+                        <select id="tax-family" class="tool-select">
+                            <option value="single">{% if lang == 'ja' %}独身{% elif lang == 'ar' %}أعزب{% else %}Single{% endif %}</option>
+                            <option value="married">{% if lang == 'ja' %}既婚（配偶者あり）{% elif lang == 'ar' %}متزوج{% else %}Married{% endif %}</option>
+                            <option value="family">{% if lang == 'ja' %}既婚＋子供あり{% elif lang == 'ar' %}متزوج مع أطفال{% else %}Married with Children{% endif %}</option>
+                        </select>
+                    </div>
+                    <button type="button" id="tax-calc-btn" class="tool-btn">{% if lang == 'ja' %}シミュレーションする{% elif lang == 'ar' %}ابدأ المحاكاة{% else %}Simulate{% endif %}</button>
+                </form>
+            </div>
+
+            <div class="tool-results-panel" id="tax-results" style="display:none;">
+                <div id="tax-highlight"></div>
+                <h3>{% if lang == 'ja' %}税負担比較{% elif lang == 'ar' %}مقارنة الأعباء الضريبية{% else %}Tax Burden Comparison{% endif %}</h3>
+                <div id="tax-chart"></div>
+                <h3>{% if lang == 'ja' %}詳細内訳{% elif lang == 'ar' %}التفاصيل{% else %}Detailed Breakdown{% endif %}</h3>
+                <div id="tax-detail"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{# ── FAQ ── #}
+{% if faq_items %}
+<section class="section faq-section">
+    <div class="container">
+        <h2 class="section-title">{% if lang == 'ja' %}よくある質問{% elif lang == 'ar' %}الأسئلة الشائعة{% else %}FAQ{% endif %}</h2>
+        <div class="faq-list">
+            {% for faq in faq_items %}
+            <div class="faq-item">
+                <button class="faq-question" aria-expanded="false">
+                    {{ faq.q }}
+                    <svg class="faq-icon" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                </button>
+                <div class="faq-answer"><p>{{ faq.a }}</p></div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{# ── 免責事項 ── #}
+<section class="section">
+    <div class="container">
+        <div class="tool-disclaimer">
+            <p>{% if lang == 'ja' %}※ 本シミュレーターは概算です。実際の税額は個人の状況により異なります。正確な税務アドバイスは税理士にご相談ください。データは2024年時点の税制に基づいています。{% elif lang == 'ar' %}※ هذا المحاكي تقديري. استشر مستشارًا ضريبيًا للحصول على نصيحة دقيقة.{% else %}※ This simulator provides estimates only. Actual tax amounts vary by individual circumstances. Please consult a tax advisor for accurate advice. Data is based on 2024 tax regulations.{% endif %}</p>
+        </div>
+    </div>
+</section>
+{% endblock %}

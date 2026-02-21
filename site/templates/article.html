@@ -1,0 +1,188 @@
+{% extends "base.html" %}
+
+{% block structured_data %}
+{# ── NewsArticle JSON-LD ── #}
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "NewsArticle",
+    "headline": "{{ article.title|default('') }}",
+    "description": "{{ article.excerpt|default('') }}",
+    "datePublished": "{{ published_date_iso|default(article.created_at|default('')) }}",
+    "dateModified": "{{ modified_date_iso|default(article.updated_at|default(article.created_at|default(''))) }}",
+    "author": {
+        "@type": "Organization",
+        "name": "Connect-Sekai"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "Connect-Sekai",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "{{ site_url|default('https://connect-sekai.com') }}/images/logo.png"
+        }
+    },
+    {% if article.image_path and article.image_path != '[placeholder]' %}
+    "image": "{{ site_url|default('https://connect-sekai.com') }}/images/{{ article.country }}-{{ article.id }}{{ article.image_ext|default('.jpg') }}",
+    {% endif %}
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "{{ canonical_url|default('') }}"
+    },
+    "articleSection": "{{ genre_name_ja|default('') }}",
+    "inLanguage": "{{ lang|default('ja') }}"
+}
+</script>
+{% endblock %}
+
+{% block extra_head %}
+{% if article.created_at|default('') %}
+<meta property="article:published_time" content="{{ published_date_iso|default(article.created_at) }}">
+{% endif %}
+{% if modified_date_iso|default('') %}
+<meta property="article:modified_time" content="{{ modified_date_iso }}">
+{% endif %}
+{% endblock %}
+
+{% block content %}
+{# ── パンくずナビゲーション ── #}
+{% if breadcrumbs|default([]) %}
+<nav class="breadcrumb" aria-label="{% if lang == 'ja' %}パンくずリスト{% elif lang == 'ar' %}مسار التنقل{% else %}Breadcrumb{% endif %}">
+    <div class="container">
+        <ol class="breadcrumb-list">
+            {% for crumb in breadcrumbs %}
+            <li class="breadcrumb-item{% if loop.last %} breadcrumb-item--current{% endif %}">
+                {% if loop.last %}
+                <span aria-current="page">{{ crumb.name }}</span>
+                {% else %}
+                <a href="{{ crumb.url }}">{{ crumb.name }}</a>
+                {% endif %}
+            </li>
+            {% endfor %}
+        </ol>
+    </div>
+</nav>
+{% endif %}
+
+<section class="section">
+    <div class="container">
+        <a href="{{ base_path }}{{ article.country }}/index.html" class="article-back">&larr; {% if lang == 'ja' %}{{ country_info.name_ja|default(country_info.name|default('')) }}{% else %}{{ country_info.name|default('') }}{% endif %}</a>
+
+        <article itemscope itemtype="https://schema.org/NewsArticle">
+            {% if article.image_path and article.image_path != '[placeholder]' %}
+            <img src="{{ base_path }}images/{{ article.country }}-{{ article.id }}{{ article.image_ext|default('.jpg') }}" alt="{{ article.title }}" class="article-hero-img" itemprop="image" width="1120" height="480">
+            {% endif %}
+
+            <div class="article-header">
+                <h1 itemprop="headline">{{ article.title }}</h1>
+                <div class="card-meta article-meta">
+                    <span class="badge badge-{{ article.country }}">{{ article.country|upper }}</span>
+                    {% if genre_name_ja %}
+                    <span class="badge badge-genre">{{ genre_name_ja }}</span>
+                    {% endif %}
+                    <time datetime="{{ published_date_iso|default(article.created_at[:10]) }}" itemprop="datePublished">{{ article.created_at[:10] }}</time>
+                    {% if reading_time|default(0) %}
+                    <span class="reading-time" aria-label="{% if lang == 'ja' %}読了時間 {{ reading_time }} 分{% elif lang == 'ar' %}وقت القراءة {{ reading_time }} دقائق{% else %}{{ reading_time }} min read{% endif %}">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                        {{ reading_time }} {% if lang == 'ja' %}分{% elif lang == 'ar' %}دقائق{% else %}min{% endif %}
+                    </span>
+                    {% endif %}
+                </div>
+            </div>
+
+            {# ── AIO用：この記事のポイント (サマリーボックス) ── #}
+            {% if article.excerpt %}
+            <div class="article-summary">
+                <h2 class="article-summary-title">
+                    {% if lang == 'ja' %}この記事のポイント{% elif lang == 'ar' %}نقاط المقال{% else %}Key Takeaways{% endif %}
+                </h2>
+                <p>{{ article.excerpt }}</p>
+            </div>
+            {% endif %}
+
+            <div class="article-body" itemprop="articleBody">
+                {{ article.body_html|safe }}
+            </div>
+
+            <meta itemprop="author" content="Connect-Sekai">
+            {% if modified_date_iso|default('') %}
+            <meta itemprop="dateModified" content="{{ modified_date_iso }}">
+            {% endif %}
+        </article>
+
+        {# ── ニュースレター購読 CTA ── #}
+        <div class="newsletter-cta">
+            <p class="newsletter-cta-text">{% if lang == 'ja' %}この記事は役に立ちましたか？最新記事をメールでお届けします{% elif lang == 'ar' %}هل أعجبك هذا المقال؟ احصل على أحدث المقالات عبر البريد{% else %}Found this useful? Get the latest articles by email{% endif %}</p>
+            <form class="subscribe-form subscribe-form--cta" onsubmit="return handleSubscribe(event, this)">
+                <input type="email" name="email" placeholder="{% if lang == 'ja' %}メールアドレス{% elif lang == 'ar' %}البريد الإلكتروني{% else %}Email address{% endif %}" required autocomplete="email" class="subscribe-input">
+                <button type="submit" class="subscribe-btn">{% if lang == 'ja' %}購読する{% elif lang == 'ar' %}اشتراك{% else %}Subscribe{% endif %}</button>
+            </form>
+        </div>
+
+        {# ── ソーシャルシェアリンク ── #}
+        <div class="share-buttons">
+            <span class="share-label">{% if lang == 'ja' %}シェア{% elif lang == 'ar' %}مشاركة{% else %}Share{% endif %}:</span>
+            <a href="https://twitter.com/intent/tweet?url={{ canonical_url|default('')|urlencode }}&text={{ article.title|urlencode }}" target="_blank" rel="noopener noreferrer" class="share-btn share-btn--x" aria-label="{% if lang == 'ja' %}Xでシェア{% else %}Share on X{% endif %}">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                <span>X</span>
+            </a>
+            <a href="https://www.facebook.com/sharer/sharer.php?u={{ canonical_url|default('')|urlencode }}" target="_blank" rel="noopener noreferrer" class="share-btn share-btn--fb" aria-label="{% if lang == 'ja' %}Facebookでシェア{% else %}Share on Facebook{% endif %}">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                <span>Facebook</span>
+            </a>
+            <a href="https://social-plugins.line.me/lineit/share?url={{ canonical_url|default('')|urlencode }}" target="_blank" rel="noopener noreferrer" class="share-btn share-btn--line" aria-label="{% if lang == 'ja' %}LINEでシェア{% else %}Share on LINE{% endif %}">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.627-.63h2.386c.349 0 .63.285.63.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.627-.63.349 0 .631.285.631.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.349 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.281.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314"/></svg>
+                <span>LINE</span>
+            </a>
+        </div>
+
+        {# ── SNS キャプション ── #}
+        {% if article.caption %}
+        <div class="sns-preview">
+            <h3>{% if lang == 'ja' %}SNS キャプション{% elif lang == 'ar' %}نص المنشور{% else %}SNS Caption{% endif %}</h3>
+            <p>{{ article.caption }}</p>
+            {% if article.hashtags %}
+            <div class="tags">
+                {% for tag in article.hashtags.split() %}
+                <span class="tag">{{ tag }}</span>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        {# ── ソースリンク ── #}
+        {% if article.source_url %}
+        <div class="source-link">
+            <a href="{{ article.source_url }}" target="_blank" rel="noopener">{% if lang == 'ja' %}元記事を読む{% elif lang == 'ar' %}اقرأ المصدر{% else %}Read source article{% endif %} &rarr;</a>
+        </div>
+        {% endif %}
+
+        {# ── 関連記事セクション ── #}
+        {% if related_articles|default([]) %}
+        <section class="related-articles">
+            <h2 class="section-title">{% if lang == 'ja' %}関連記事{% elif lang == 'ar' %}مقالات ذات صلة{% else %}Related Articles{% endif %}</h2>
+            <div class="grid grid-3">
+                {% for rel in related_articles[:3] %}
+                <a href="{{ base_path }}{{ rel.country }}/article-{{ rel.id }}.html" class="card">
+                    {% if rel.image_path and rel.image_path != '[placeholder]' %}
+                    <img src="{{ base_path }}images/{{ rel.country }}-{{ rel.id }}{{ rel.image_ext|default('.jpg') }}" alt="{{ rel.title }}" class="card-img" loading="lazy" width="400" height="225">
+                    {% else %}
+                    <div class="card-img" role="img" aria-label="{{ rel.title }}"></div>
+                    {% endif %}
+                    <div class="card-body">
+                        <h3>{{ rel.title }}</h3>
+                        <p>{{ rel.excerpt }}</p>
+                        <div class="card-meta">
+                            <span class="badge badge-{{ rel.country }}">{{ rel.country|upper }}</span>
+                            <time datetime="{{ rel.created_at[:10] }}">{{ rel.created_at[:10] }}</time>
+                        </div>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+        </section>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

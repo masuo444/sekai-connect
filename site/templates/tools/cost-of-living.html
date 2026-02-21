@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+
+{% block structured_data %}
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "{% if lang == 'ja' %}生活コスト比較 — 東京 vs ドバイ vs リヤド{% else %}Cost of Living Comparison — Tokyo vs Dubai vs Riyadh{% endif %}",
+    "description": "{{ description }}",
+    "url": "{{ canonical_url }}",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "Web"
+}
+</script>
+{% if faq_items %}
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+        {% for faq in faq_items %}
+        {
+            "@type": "Question",
+            "name": "{{ faq.q }}",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "{{ faq.a }}"
+            }
+        }{% if not loop.last %},{% endif %}
+        {% endfor %}
+    ]
+}
+</script>
+{% endif %}
+{% endblock %}
+
+{% block extra_head %}
+<script src="{{ base_path }}js/tools-common.js" defer></script>
+<script src="{{ base_path }}js/cost-of-living.js" defer></script>
+{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="container">
+        <h1>{% if lang == 'ja' %}生活コスト比較{% elif lang == 'ar' %}مقارنة تكاليف المعيشة{% else %}Cost of Living Comparison{% endif %}</h1>
+        <p>{% if lang == 'ja' %}東京 vs ドバイ vs リヤド — カテゴリ別の月額生活費を比較{% elif lang == 'ar' %}قارن تكاليف المعيشة الشهرية{% else %}Tokyo vs Dubai vs Riyadh — Compare monthly living costs by category{% endif %}</p>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        <div class="tool-layout tool-layout--wide">
+            <div class="tool-form-panel tool-form-panel--compact">
+                <h2 class="tool-form-title">{% if lang == 'ja' %}生活水準を選択{% elif lang == 'ar' %}اختر مستوى المعيشة{% else %}Select Lifestyle Tier{% endif %}</h2>
+                <input type="hidden" id="col-tier" value="comfort">
+                <div class="tool-tier-btns">
+                    <button type="button" class="tool-tier-btn" data-tier="standard">
+                        <span class="tool-tier-content">
+                            <span class="tool-tier-name">{% if lang == 'ja' %}スタンダード{% elif lang == 'ar' %}قياسي{% else %}Standard{% endif %}</span>
+                            <span class="tool-tier-desc">{% if lang == 'ja' %}一般的な生活{% elif lang == 'ar' %}حياة عادية{% else %}Basic lifestyle{% endif %}</span>
+                        </span>
+                    </button>
+                    <button type="button" class="tool-tier-btn active" data-tier="comfort">
+                        <span class="tool-tier-content">
+                            <span class="tool-tier-name">{% if lang == 'ja' %}コンフォート{% elif lang == 'ar' %}مريح{% else %}Comfort{% endif %}</span>
+                            <span class="tool-tier-desc">{% if lang == 'ja' %}快適な生活{% elif lang == 'ar' %}حياة مريحة{% else %}Comfortable living{% endif %}</span>
+                        </span>
+                    </button>
+                    <button type="button" class="tool-tier-btn" data-tier="luxury">
+                        <span class="tool-tier-content">
+                            <span class="tool-tier-name">{% if lang == 'ja' %}ラグジュアリー{% elif lang == 'ar' %}فاخر{% else %}Luxury{% endif %}</span>
+                            <span class="tool-tier-desc">{% if lang == 'ja' %}富裕層の生活{% elif lang == 'ar' %}حياة فاخرة{% else %}Premium lifestyle{% endif %}</span>
+                        </span>
+                    </button>
+                </div>
+                <button type="button" id="col-calc-btn" class="tool-btn">{% if lang == 'ja' %}比較する{% elif lang == 'ar' %}قارن{% else %}Compare{% endif %}</button>
+            </div>
+
+            <div class="tool-results-panel" id="col-results" style="display:none;">
+                <div id="col-highlight"></div>
+                <h3>{% if lang == 'ja' %}月額合計比較{% elif lang == 'ar' %}مقارنة الإجمالي الشهري{% else %}Monthly Total Comparison{% endif %}</h3>
+                <div id="col-totals"></div>
+                <h3>{% if lang == 'ja' %}カテゴリ別比較{% elif lang == 'ar' %}مقارنة حسب الفئة{% else %}Category Breakdown{% endif %}</h3>
+                <div id="col-chart"></div>
+                <h3>{% if lang == 'ja' %}詳細テーブル{% elif lang == 'ar' %}جدول تفصيلي{% else %}Detailed Table{% endif %}</h3>
+                <div id="col-detail"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% if faq_items %}
+<section class="section faq-section">
+    <div class="container">
+        <h2 class="section-title">{% if lang == 'ja' %}よくある質問{% elif lang == 'ar' %}الأسئلة الشائعة{% else %}FAQ{% endif %}</h2>
+        <div class="faq-list">
+            {% for faq in faq_items %}
+            <div class="faq-item">
+                <button class="faq-question" aria-expanded="false">
+                    {{ faq.q }}
+                    <svg class="faq-icon" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                </button>
+                <div class="faq-answer"><p>{{ faq.a }}</p></div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<section class="section">
+    <div class="container">
+        <div class="tool-disclaimer">
+            <p>{% if lang == 'ja' %}※ 生活コストデータは2024年時点の概算値です。実際の費用は生活スタイルや為替レートにより大きく異なります。最新の情報は現地の生活情報サイトでご確認ください。{% elif lang == 'ar' %}※ بيانات التكاليف تقديرية. قد تختلف التكاليف الفعلية.{% else %}※ Cost data is approximate as of 2024. Actual costs vary significantly by lifestyle and exchange rates.{% endif %}</p>
+        </div>
+    </div>
+</section>
+{% endblock %}

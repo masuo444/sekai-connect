@@ -1,0 +1,23 @@
+[Unit]
+Description=Connect-Nexus Newsletter API
+After=network.target
+
+[Service]
+User=connectnexus
+WorkingDirectory=/opt/connect-nexus
+ExecStart=/opt/connect-nexus/venv/bin/python -m src.subscribers.api
+Restart=always
+RestartSec=5
+Environment=PYTHONPATH=/opt/connect-nexus
+
+# ── 環境変数ファイル (SMTP設定など) ──
+EnvironmentFile=-/opt/connect-nexus/.env
+
+# ── セキュリティ設定 ──
+NoNewPrivileges=true
+ProtectSystem=strict
+ReadWritePaths=/opt/connect-nexus/data
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
