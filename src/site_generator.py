@@ -410,6 +410,7 @@ class SiteGenerator:
             published_date_iso=now_iso,
             modified_date_iso=now_iso,
             faq_items=[],
+            current_year=self._current_year(),
         )
         self._write_html(rel_path, html)
         self._generated_pages.append(
@@ -463,6 +464,7 @@ class SiteGenerator:
                 published_date_iso=now_iso,
                 modified_date_iso=now_iso,
                 faq_items=[],
+                current_year=self._current_year(),
             )
             self._write_html(rel_path, html)
             self._generated_pages.append(
@@ -541,6 +543,7 @@ class SiteGenerator:
                 published_date_iso=now_iso,
                 modified_date_iso=now_iso,
                 faq_items=[],
+                current_year=self._current_year(),
             )
             self._write_html(rel_path, html)
             self._generated_pages.append(
@@ -624,6 +627,7 @@ class SiteGenerator:
                 published_date_iso=now_iso,
                 modified_date_iso=now_iso,
                 faq_items=[],
+                current_year=self._current_year(),
             )
             self._write_html(rel_path, html)
             self._generated_pages.append(
@@ -702,6 +706,7 @@ class SiteGenerator:
                 reading_time=reading_time,
                 related_articles=related_articles,
                 faq_items=[],
+                current_year=self._current_year(),
             )
             self._write_html(rel_path, html)
             self._generated_pages.append(
@@ -758,66 +763,66 @@ class SiteGenerator:
     TOOL_FAQS: dict[str, dict[str, list[dict[str, str]]]] = {
         "tax-simulator": {
             "ja": [
-                {"q": "UAEに個人所得税はありますか？", "a": "いいえ。UAEでは個人所得税は課されません。ただし、法人税（課税所得37.5万AED超に9%）やVAT（5%）は存在します。"},
-                {"q": "サウジアラビアの外国人に対する税金は？", "a": "サウジアラビアでも個人所得税はありませんが、外国法人は20%の法人税が課されます。また、VAT 15%が適用されます。"},
-                {"q": "日本の税金はどのように計算されますか？", "a": "日本の所得税は累進課税（5〜45%）に住民税10%、復興特別所得税2.1%、社会保険料約15%が加わります。"},
+                {"q": "UAEに個人所得税はありますか？", "a": "UAEでは個人所得税が課されることはありません。給与・投資利益・資産売却益のいずれも非課税となっています。ただし、2023年6月に導入された法人税（課税所得37.5万AED超に対して9%）や、2018年から適用されているVAT 5%は別途存在する点にご留意ください。"},
+                {"q": "サウジアラビアの外国人に対する税金は？", "a": "個人所得税については、サウジアラビアも非課税を維持しています。一方で、外国法人には20%の法人税が適用され、ザカート（イスラム税）は自国民の法人に対して課されるのみとなります。VATは2020年に5%から15%へ引き上げられました。"},
+                {"q": "日本の税金はどのように計算されますか？", "a": "日本の税負担は複数の要素で構成されています。まず所得税が累進課税方式で5〜45%、これに住民税10%と復興特別所得税2.1%が上乗せされます。さらに健康保険・年金などの社会保険料が給与の約15%を占めるため、年収1,500万円を超えると実効税率は50%に迫ることもあります。"},
             ],
             "en": [
-                {"q": "Is there personal income tax in the UAE?", "a": "No. The UAE does not levy personal income tax. However, corporate tax (9% on taxable income over AED 375K) and VAT (5%) exist."},
-                {"q": "What taxes apply to foreigners in Saudi Arabia?", "a": "Saudi Arabia has no personal income tax, but foreign companies face 20% corporate tax. VAT is 15%."},
-                {"q": "How is Japan's tax calculated?", "a": "Japan applies progressive income tax (5-45%), plus 10% resident tax, 2.1% surtax, and approximately 15% social insurance."},
+                {"q": "Is there personal income tax in the UAE?", "a": "No — the UAE imposes zero personal income tax on salaries, investment gains, and capital gains. Note, however, that a 9% corporate tax (on taxable income exceeding AED 375K) took effect in June 2023, and a 5% VAT has been in place since 2018."},
+                {"q": "What taxes apply to foreigners in Saudi Arabia?", "a": "Saudi Arabia does not levy personal income tax. Foreign-owned businesses are subject to a 20% corporate tax rate. VAT stands at 15% following the 2020 rate increase. Zakat applies only to Saudi-owned entities."},
+                {"q": "How is Japan's tax calculated?", "a": "Japan's tax burden comprises multiple layers: progressive income tax (5–45%), a flat 10% resident tax, a 2.1% reconstruction surtax, and social insurance premiums of roughly 15% of salary. For earners above JPY 15M, the effective rate can approach 50%."},
             ],
             "ar": [
-                {"q": "هل توجد ضريبة دخل شخصي في الإمارات؟", "a": "لا. لا تفرض الإمارات ضريبة دخل شخصي، لكن توجد ضريبة شركات (9%) وضريبة القيمة المضافة (5%)."},
-                {"q": "ما الضرائب المطبقة على الأجانب في السعودية؟", "a": "لا توجد ضريبة دخل شخصي في السعودية، لكن الشركات الأجنبية تخضع لضريبة 20%."},
+                {"q": "هل توجد ضريبة دخل شخصي في الإمارات؟", "a": "لا تفرض الإمارات أي ضريبة على الدخل الشخصي، سواء الرواتب أو أرباح الاستثمار. مع ذلك، تطبق ضريبة شركات بنسبة 9% وضريبة قيمة مضافة 5%."},
+                {"q": "ما الضرائب المطبقة على الأجانب في السعودية؟", "a": "لا ضريبة دخل شخصي في المملكة. الشركات الأجنبية تخضع لضريبة 20%، وضريبة القيمة المضافة 15%."},
             ],
         },
         "golden-visa": {
             "ja": [
-                {"q": "UAEゴールデンビザの有効期間は？", "a": "UAEゴールデンビザは10年間有効で、更新可能です。スポンサー不要で、UAE国外での長期滞在も可能です。"},
-                {"q": "サウジプレミアムレジデンシーの費用は？", "a": "永住型は80万SAR（約3,200万円）の一括支払い、年次更新型は年間10万SAR（約400万円）です。"},
-                {"q": "ゴールデンビザで家族も滞在できますか？", "a": "はい。配偶者と子供（18歳未満）をスポンサーでき、家族全員に長期滞在ビザが発行されます。"},
+                {"q": "UAEゴールデンビザの有効期間は？", "a": "10年間有効で、条件を満たす限り更新が可能です。従来のビザと異なりスポンサー（雇用主）が不要で、UAE国外に6ヶ月以上滞在してもビザが失効しない点が大きなメリットとなっています。2022年の制度改正により、対象カテゴリも大幅に拡大されました。"},
+                {"q": "サウジプレミアムレジデンシーの費用は？", "a": "2つのタイプから選択できます。永住型（Permanent）は80万SAR（約3,200万円）の一括支払いで取得でき、年次更新型（Renewable）は毎年10万SAR（約400万円）の支払いとなります。いずれもサウジ国内での不動産取得や事業活動が認められます。"},
+                {"q": "ゴールデンビザで家族も滞在できますか？", "a": "もちろん可能です。配偶者と18歳未満の子供をスポンサーとして帯同でき、家族全員に同等の長期滞在ビザが発行されます。お子様の就学年齢についても、UAE国内のインターナショナルスクールへの入学手続きがスムーズに進められるようになっています。"},
             ],
             "en": [
-                {"q": "How long is the UAE Golden Visa valid?", "a": "The UAE Golden Visa is valid for 10 years and is renewable. It does not require a sponsor and allows long-term stays outside the UAE."},
-                {"q": "What does Saudi Premium Residency cost?", "a": "The permanent type costs SAR 800K (~$213K) as a one-time payment. The annual type costs SAR 100K (~$27K) per year."},
-                {"q": "Can family members be included?", "a": "Yes. You can sponsor your spouse and children under 18, and they will receive long-term residence visas."},
+                {"q": "How long is the UAE Golden Visa valid?", "a": "It lasts 10 years and is renewable provided eligibility conditions continue to be met. Unlike conventional visas, no employer sponsor is required, and the visa remains valid even during extended absences from the UAE. The 2022 reform significantly broadened eligible categories."},
+                {"q": "What does Saudi Premium Residency cost?", "a": "Two options are available: a permanent residency for a one-time fee of SAR 800K (~$213K), or an annually renewable permit at SAR 100K (~$27K) per year. Both tiers grant the right to own property and operate businesses in Saudi Arabia."},
+                {"q": "Can family members be included?", "a": "Absolutely. Holders may sponsor their spouse and children under 18, with each family member receiving their own long-term residence visa. This also facilitates enrollment at UAE international schools."},
             ],
             "ar": [
-                {"q": "ما مدة صلاحية التأشيرة الذهبية الإماراتية؟", "a": "التأشيرة الذهبية صالحة لمدة 10 سنوات وقابلة للتجديد."},
-                {"q": "ما تكلفة الإقامة المميزة السعودية؟", "a": "النوع الدائم يكلف 800 ألف ريال، والنوع السنوي 100 ألف ريال سنوياً."},
+                {"q": "ما مدة صلاحية التأشيرة الذهبية الإماراتية؟", "a": "صالحة لمدة 10 سنوات وقابلة للتجديد دون الحاجة إلى كفيل. تبقى سارية حتى في حال الإقامة خارج الإمارات لفترات طويلة."},
+                {"q": "ما تكلفة الإقامة المميزة السعودية؟", "a": "الإقامة الدائمة تكلف 800 ألف ريال دفعة واحدة. النوع السنوي يكلف 100 ألف ريال سنوياً. كلاهما يتيح تملك العقارات وممارسة الأعمال."},
             ],
         },
         "real-estate-roi": {
             "ja": [
-                {"q": "ドバイの不動産利回りは？", "a": "ドバイの平均表面利回りは5〜8%で、東京（3〜4%）と比較して高い水準です。特にマリーナやJVCエリアが人気です。"},
-                {"q": "外国人でもドバイの不動産を購入できますか？", "a": "はい。フリーホールドエリアでは外国人も完全所有権で不動産を購入できます。"},
-                {"q": "キャップレートとROIの違いは？", "a": "キャップレートは物件価格に対するNOIの割合、ROIは購入諸費用を含めた総投資額に対するリターンです。"},
+                {"q": "ドバイの不動産利回りは？", "a": "直近のデータによると、ドバイの平均表面利回りは5〜8%に達しており、東京の3〜4%と比較すると明らかに高い水準にあります。中でもドバイ・マリーナやJVC（Jumeirah Village Circle）は安定した需要があり、投資家から根強い人気を集めています。"},
+                {"q": "外国人でもドバイの不動産を購入できますか？", "a": "購入可能です。ドバイには政府指定のフリーホールドエリアが設けられており、外国人でも完全所有権（フリーホールド）で不動産を取得できます。代表的なエリアとしてはダウンタウン、マリーナ、パーム・ジュメイラなどが挙げられます。"},
+                {"q": "キャップレートとROIの違いは？", "a": "どちらも投資効率を測る指標ですが、計算方法が異なります。キャップレートは物件価格に対するNOI（営業純利益）の比率で、物件同士の比較に適しています。一方、ROIは購入諸費用を含めた総投資額に対するリターンを示すため、実際の投資判断により近い指標といえます。"},
             ],
             "en": [
-                {"q": "What is the average rental yield in Dubai?", "a": "Dubai's average gross yield is 5-8%, higher than Tokyo's 3-4%. Marina and JVC areas are particularly popular."},
-                {"q": "Can foreigners buy property in Dubai?", "a": "Yes. Foreigners can purchase freehold property in designated freehold areas with full ownership rights."},
-                {"q": "What is the difference between cap rate and ROI?", "a": "Cap rate measures NOI relative to property price. ROI includes all purchase costs in the total investment calculation."},
+                {"q": "What is the average rental yield in Dubai?", "a": "Recent data shows Dubai's average gross yield at 5–8%, notably above Tokyo's 3–4%. Marina and JVC (Jumeirah Village Circle) attract consistent demand and remain investor favorites."},
+                {"q": "Can foreigners buy property in Dubai?", "a": "Yes — within government-designated freehold zones, foreign nationals may acquire full ownership (freehold title). Key areas include Downtown, Marina, and Palm Jumeirah."},
+                {"q": "What is the difference between cap rate and ROI?", "a": "Both gauge investment efficiency but differ in scope. Cap rate divides NOI by property price, ideal for comparing properties. ROI factors in total acquisition costs (fees, taxes, closing costs), offering a more realistic picture of actual investment returns."},
             ],
             "ar": [
-                {"q": "ما متوسط العائد الإيجاري في دبي؟", "a": "يتراوح العائد الإجمالي في دبي بين 5-8%، وهو أعلى من طوكيو (3-4%)."},
-                {"q": "هل يمكن للأجانب شراء عقارات في دبي؟", "a": "نعم. يمكن للأجانب شراء عقارات بملكية حرة في المناطق المخصصة."},
+                {"q": "ما متوسط العائد الإيجاري في دبي؟", "a": "يتراوح العائد الإجمالي في دبي بين 5-8%، متفوقاً بوضوح على طوكيو (3-4%). مناطق المارينا وJVC تحظى بطلب مستمر من المستثمرين."},
+                {"q": "هل يمكن للأجانب شراء عقارات في دبي؟", "a": "نعم، في مناطق التملك الحر المحددة من الحكومة يمكن للأجانب الحصول على ملكية كاملة. تشمل المناطق الشهيرة داون تاون والمارينا ونخلة جميرا."},
             ],
         },
         "cost-of-living": {
             "ja": [
-                {"q": "ドバイと東京、どちらが生活費が高い？", "a": "生活水準によります。スタンダード水準ではほぼ同等ですが、ラグジュアリー水準ではドバイの方が高くなる傾向があります。特に家賃と教育費に差が出ます。"},
-                {"q": "リヤドの生活費はドバイより安い？", "a": "はい。リヤドはドバイに比べて全般的に20〜40%安い傾向があります。特に家賃が大きな差となります。"},
-                {"q": "インターナショナルスクールの費用は？", "a": "ドバイのインターナショナルスクールは年間100〜300万円、リヤドは80〜250万円が目安です。"},
+                {"q": "ドバイと東京、どちらが生活費が高い？", "a": "一概には言えず、生活水準によって答えが変わります。スタンダード水準であれば両都市はほぼ同等ですが、ラグジュアリー水準になるとドバイが東京を上回る傾向が見られます。特に差が顕著なのは住居費（ドバイの一等地は東京の1.5〜2倍）と教育費（インターナショナルスクール）の2項目です。"},
+                {"q": "リヤドの生活費はドバイより安い？", "a": "全般的に20〜40%ほど安くなる傾向があります。最大の差は家賃で、同等グレードの住居でもリヤドはドバイの約半額というケースも珍しくありません。食費や交通費の差は比較的小さいものの、エンターテインメント関連の選択肢はドバイが圧倒的に多い点も考慮に入れるべきでしょう。"},
+                {"q": "インターナショナルスクールの費用は？", "a": "ドバイでは年間100〜300万円、リヤドでは80〜250万円が一般的な目安となります。カリキュラム（IB / British / American）やスクールのランクによって大きく変動するため、複数校の比較検討をお勧めします。なお、一部の大手企業では教育手当として学費の全額または一部を負担するケースもあります。"},
             ],
             "en": [
-                {"q": "Is Dubai or Tokyo more expensive?", "a": "It depends on lifestyle. At standard levels they are similar, but luxury living tends to be pricier in Dubai, especially rent and education."},
-                {"q": "Is Riyadh cheaper than Dubai?", "a": "Yes. Riyadh is generally 20-40% cheaper than Dubai across most categories, particularly rent."},
-                {"q": "How much do international schools cost?", "a": "Dubai international schools range from $27K-$80K per year, while Riyadh ranges from $21K-$67K."},
+                {"q": "Is Dubai or Tokyo more expensive?", "a": "The answer depends on lifestyle tier. At a standard level, overall costs are broadly comparable. At the luxury end, Dubai tends to be pricier — mainly due to prime-area rents (1.5–2x Tokyo) and international school fees."},
+                {"q": "Is Riyadh cheaper than Dubai?", "a": "Generally 20–40% less across most categories. Housing shows the widest gap — similar-grade apartments in Riyadh can cost roughly half the Dubai equivalent. Food and transport differences are more modest, though Dubai offers significantly more entertainment options."},
+                {"q": "How much do international schools cost?", "a": "Budget $27K–$80K per year in Dubai and $21K–$67K in Riyadh. Costs fluctuate considerably by curriculum (IB, British, American) and school tier, so comparing multiple options is advisable. Some multinational employers cover tuition as part of relocation packages."},
             ],
             "ar": [
-                {"q": "أيهما أغلى، دبي أم طوكيو؟", "a": "يعتمد على نمط الحياة. في المستوى القياسي متشابهان، لكن الحياة الفاخرة أغلى في دبي."},
-                {"q": "هل الرياض أرخص من دبي؟", "a": "نعم. الرياض أرخص بنسبة 20-40% في معظم الفئات."},
+                {"q": "أيهما أغلى، دبي أم طوكيو؟", "a": "يعتمد الأمر على مستوى المعيشة المختار. في المستوى القياسي تتشابه التكاليف إجمالاً. أما في المستوى الفاخر فتميل دبي لتكون أغلى، خاصة في الإيجارات والمدارس الدولية."},
+                {"q": "هل الرياض أرخص من دبي؟", "a": "نعم، بنسبة 20-40% في معظم الفئات. الفرق الأكبر في الإيجارات حيث قد تصل تكلفة السكن المماثل في الرياض إلى نصف نظيره في دبي."},
             ],
         },
     }
@@ -933,6 +938,7 @@ class SiteGenerator:
                 published_date_iso=now_iso,
                 modified_date_iso=now_iso,
                 faq_items=faq_items,
+                current_year=self._current_year(),
             )
             self._write_html(rel_path, html)
             self._generated_pages.append(
@@ -1019,6 +1025,11 @@ class SiteGenerator:
     # ------------------------------------------------------------------
     # Main entry
     # ------------------------------------------------------------------
+
+    @staticmethod
+    def _current_year() -> str:
+        """Return the current year as a string."""
+        return str(datetime.now(timezone.utc).year)
 
     def generate_all(self) -> None:
         """Generate the complete static site."""

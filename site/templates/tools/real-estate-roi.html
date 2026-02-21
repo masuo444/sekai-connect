@@ -121,7 +121,7 @@
 <section class="section">
     <div class="container">
         <div class="tool-disclaimer">
-            <p>{% if lang == 'ja' %}※ 本計算機は投資判断の参考としての概算です。不動産市場は変動するため、実際のリターンは異なる場合があります。投資判断は専門家にご相談ください。{% elif lang == 'ar' %}※ هذه الحاسبة تقديرية. يرجى استشارة خبير قبل اتخاذ قرار استثماري.{% else %}※ This calculator provides estimates for reference. Actual returns may vary. Please consult a professional before making investment decisions.{% endif %}</p>
+            <p>{% if lang == 'ja' %}※ 本計算機の利回り・キャップレート・資産推移はシミュレーション上の概算値であり、将来の運用成績を保証するものではありません。為替変動・市場環境の変化・空室リスク・修繕費用等は考慮されていない場合があります。不動産投資の最終判断は、現地の不動産アドバイザーおよびファイナンシャルプランナーにご相談ください。物件データは{{ current_year|default('2026') }}年時点の市場平均に基づいています。{% elif lang == 'ar' %}※ العوائد والتوقعات تقديرية ولا تضمن الأداء المستقبلي. استشر مستشارًا عقاريًا محليًا قبل اتخاذ قرارات استثمارية. البيانات حتى {{ current_year|default('2026') }}.{% else %}※ Yields, cap rates, and projections are estimates and do not guarantee future performance. Currency fluctuations, market conditions, vacancy risk, and maintenance costs may not be fully reflected. Consult a local real estate advisor and financial planner before making investment decisions. Data based on {{ current_year|default('2026') }} market averages.{% endif %}</p>
         </div>
     </div>
 </section>

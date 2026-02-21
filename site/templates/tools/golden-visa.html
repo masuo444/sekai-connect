@@ -121,7 +121,7 @@
 <section class="section">
     <div class="container">
         <div class="tool-disclaimer">
-            <p>{% if lang == 'ja' %}※ 本診断は一般的な要件に基づく概算です。実際のビザ取得には追加書類や審査が必要です。最新の要件は各国の公式機関にご確認ください。{% elif lang == 'ar' %}※ هذا التشخيص تقديري. يرجى التحقق من المتطلبات الرسمية.{% else %}※ This diagnosis is based on general requirements. Actual visa approval requires additional documentation and review. Please verify with official authorities.{% endif %}</p>
+            <p>{% if lang == 'ja' %}※ 本診断ツールはUAE政府（ICP/GDRFA）およびサウジアラビア政府（Premium Residency Center）が公開している一般要件に基づいた簡易判定です。実際の申請では、犯罪歴確認・健康診断・追加書類の提出が求められる場合があります。ビザ要件は予告なく変更されることがあるため、最新情報は各国の公式機関で直接ご確認ください。最終更新: {{ current_year|default('2026') }}年。{% elif lang == 'ar' %}※ تستند هذه الأداة إلى المتطلبات العامة المنشورة. قد تتغير الشروط دون إشعار مسبق. يرجى التحقق من الجهات الرسمية في كل دولة. آخر تحديث: {{ current_year|default('2026') }}.{% else %}※ This tool uses publicly available general requirements from UAE (ICP/GDRFA) and Saudi Arabia (Premium Residency Center). Actual applications may require background checks, medical exams, and additional documentation. Requirements are subject to change without notice; verify with official authorities. Last updated: {{ current_year|default('2026') }}.{% endif %}</p>
         </div>
     </div>
 </section>

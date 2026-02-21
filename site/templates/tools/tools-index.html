@@ -52,26 +52,34 @@
 <section class="section">
     <div class="container">
         <div class="grid grid-2 tools-grid">
-            <a href="{{ base_path }}tools/tax-simulator.html" class="card tool-card tool-card--tax">
-                <div class="tool-card-icon">&#128176;</div>
+            <a href="{{ base_path }}tools/tax-simulator.html" class="card tool-card tool-card--tax scroll-fade">
+                <div class="tool-card-icon">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                </div>
                 <h2>{% if lang == 'ja' %}税金シミュレーター{% elif lang == 'ar' %}محاكي الضرائب{% else %}Tax Simulator{% endif %}</h2>
                 <p>{% if lang == 'ja' %}日本 vs UAE vs サウジアラビア — 年収別の税負担を比較し、移住による節税額をシミュレーション{% elif lang == 'ar' %}مقارنة الأعباء الضريبية حسب الدخل السنوي{% else %}Compare tax burdens by annual income across Japan, UAE & Saudi Arabia{% endif %}</p>
                 <span class="tool-card-cta">{% if lang == 'ja' %}シミュレーションする{% elif lang == 'ar' %}ابدأ المحاكاة{% else %}Start Simulation{% endif %} &rarr;</span>
             </a>
-            <a href="{{ base_path }}tools/golden-visa.html" class="card tool-card tool-card--visa">
-                <div class="tool-card-icon">&#127758;</div>
+            <a href="{{ base_path }}tools/golden-visa.html" class="card tool-card tool-card--visa scroll-fade">
+                <div class="tool-card-icon">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+                </div>
                 <h2>{% if lang == 'ja' %}ゴールデンビザ診断{% elif lang == 'ar' %}تشخيص التأشيرة الذهبية{% else %}Golden Visa Checker{% endif %}</h2>
                 <p>{% if lang == 'ja' %}あなたの資産・職種・投資額からUAEゴールデンビザ・サウジプレミアムレジデンシーの取得可能性を診断{% elif lang == 'ar' %}تحقق من أهليتك للحصول على التأشيرة الذهبية{% else %}Check your eligibility for UAE Golden Visa & Saudi Premium Residency{% endif %}</p>
                 <span class="tool-card-cta">{% if lang == 'ja' %}診断する{% elif lang == 'ar' %}ابدأ التشخيص{% else %}Check Eligibility{% endif %} &rarr;</span>
             </a>
-            <a href="{{ base_path }}tools/real-estate-roi.html" class="card tool-card tool-card--realestate">
-                <div class="tool-card-icon">&#127968;</div>
+            <a href="{{ base_path }}tools/real-estate-roi.html" class="card tool-card tool-card--realestate scroll-fade">
+                <div class="tool-card-icon">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"/><line x1="9" y1="6" x2="9" y2="6.01"/><line x1="15" y1="6" x2="15" y2="6.01"/><line x1="9" y1="10" x2="9" y2="10.01"/><line x1="15" y1="10" x2="15" y2="10.01"/><line x1="9" y1="14" x2="9" y2="14.01"/><line x1="15" y1="14" x2="15" y2="14.01"/><path d="M9 18h6"/></svg>
+                </div>
                 <h2>{% if lang == 'ja' %}不動産ROI計算機{% elif lang == 'ar' %}حاسبة عائد الاستثمار العقاري{% else %}Real Estate ROI Calculator{% endif %}</h2>
                 <p>{% if lang == 'ja' %}ドバイ・東京の不動産投資リターンを比較 — キャッシュフロー、キャップレート、5年/10年の資産推移{% elif lang == 'ar' %}قارن عوائد الاستثمار العقاري{% else %}Compare real estate investment returns — cash flow, cap rate & asset projections{% endif %}</p>
                 <span class="tool-card-cta">{% if lang == 'ja' %}計算する{% elif lang == 'ar' %}ابدأ الحساب{% else %}Calculate ROI{% endif %} &rarr;</span>
             </a>
-            <a href="{{ base_path }}tools/cost-of-living.html" class="card tool-card tool-card--cost">
-                <div class="tool-card-icon">&#128200;</div>
+            <a href="{{ base_path }}tools/cost-of-living.html" class="card tool-card tool-card--cost scroll-fade">
+                <div class="tool-card-icon">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="3" x2="12" y2="21"/><polyline points="1 12 12 3 23 12"/><line x1="4" y1="15" x2="20" y2="15"/><circle cx="7" cy="18" r="1.5"/><circle cx="17" cy="18" r="1.5"/></svg>
+                </div>
                 <h2>{% if lang == 'ja' %}生活コスト比較{% elif lang == 'ar' %}مقارنة تكاليف المعيشة{% else %}Cost of Living Comparison{% endif %}</h2>
                 <p>{% if lang == 'ja' %}東京・ドバイ・リヤドの生活費をカテゴリ別に比較 — スタンダードからラグジュアリーまで3段階{% elif lang == 'ar' %}قارن تكاليف المعيشة بين المدن{% else %}Compare living costs across Tokyo, Dubai & Riyadh — from standard to luxury{% endif %}</p>
                 <span class="tool-card-cta">{% if lang == 'ja' %}比較する{% elif lang == 'ar' %}ابدأ المقارنة{% else %}Compare Now{% endif %} &rarr;</span>

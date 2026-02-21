@@ -111,7 +111,7 @@
 <section class="section">
     <div class="container">
         <div class="tool-disclaimer">
-            <p>{% if lang == 'ja' %}※ 生活コストデータは2024年時点の概算値です。実際の費用は生活スタイルや為替レートにより大きく異なります。最新の情報は現地の生活情報サイトでご確認ください。{% elif lang == 'ar' %}※ بيانات التكاليف تقديرية. قد تختلف التكاليف الفعلية.{% else %}※ Cost data is approximate as of 2024. Actual costs vary significantly by lifestyle and exchange rates.{% endif %}</p>
+            <p>{% if lang == 'ja' %}※ 掲載されている生活コストは、{{ current_year|default('2026') }}年時点での各都市の平均的な価格帯を参考にした概算値です。家賃はエリア・間取り・築年数によって大幅に異なり、食費・交通費も個人の嗜好やライフスタイルに左右されます。為替レートの変動も費用に影響します。最新の現地物価は、Numbeo等の生活情報サイトや現地の不動産サイトで直接ご確認ください。{% elif lang == 'ar' %}※ تكاليف المعيشة المعروضة تقديرية وتستند إلى متوسطات {{ current_year|default('2026') }}. تختلف التكاليف الفعلية حسب الموقع ونمط الحياة وأسعار الصرف. يرجى التحقق من مصادر محلية للبيانات الأحدث.{% else %}※ Living costs shown are estimates based on {{ current_year|default('2026') }} city averages. Rent varies significantly by area and unit type. Food and transport costs depend on personal preferences. Exchange rate fluctuations also affect costs. Check Numbeo or local property sites for the latest figures.{% endif %}</p>
         </div>
     </div>
 </section>

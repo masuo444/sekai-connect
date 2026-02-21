@@ -108,14 +108,59 @@
     {% endfor %}
 </nav>
 
-{# ── 記事一覧 ── #}
+{# ── 記事一覧 (Feature + Grid) ── #}
 {% if articles %}
 <section class="section">
     <div class="container">
         <h2 class="section-title">{% if lang == 'ja' %}最新記事{% elif lang == 'ar' %}أحدث المقالات{% else %}Latest Articles{% endif %}</h2>
-        <div class="grid grid-3">
-            {% for article in articles %}
-            <a href="{{ base_path }}{{ article.country }}/article-{{ article.id }}.html" class="card">
+
+        {# ── Featured: first 3 articles in magazine layout ── #}
+        {% if articles|length >= 3 %}
+        <div class="magazine-grid">
+            <a href="{{ base_path }}{{ articles[0].country }}/article-{{ articles[0].id }}.html" class="card card-feature scroll-fade">
+                {% if articles[0].image_path and articles[0].image_path != '[placeholder]' %}
+                <img src="{{ base_path }}images/{{ articles[0].country }}-{{ articles[0].id }}{{ articles[0].image_ext|default('.jpg') }}" alt="{{ articles[0].title }}" class="card-img" loading="lazy" width="672" height="420">
+                {% else %}
+                <div class="card-img" role="img" aria-label="{{ articles[0].title }}"></div>
+                {% endif %}
+                <div class="card-body">
+                    <h3>{{ articles[0].title }}</h3>
+                    <p>{{ articles[0].excerpt }}</p>
+                    <div class="card-meta">
+                        <span class="badge badge-{{ articles[0].country }}">{{ articles[0].country|upper }}</span>
+                        {% if articles[0].genre and genres %}
+                        {% set g = genres[articles[0].genre] if articles[0].genre in genres else {} %}
+                        <span class="badge badge-genre-{{ g.slug|default('business') }}">{{ g.name_ja if lang|default('ja') == 'ja' else g.name_en|default(g.name_ja|default('')) }}</span>
+                        {% endif %}
+                        <time datetime="{{ articles[0].created_at[:10] }}">{{ articles[0].created_at[:10] }}</time>
+                    </div>
+                </div>
+            </a>
+            {% for article in articles[1:3] %}
+            <a href="{{ base_path }}{{ article.country }}/article-{{ article.id }}.html" class="card card-side scroll-fade">
+                {% if article.image_path and article.image_path != '[placeholder]' %}
+                <img src="{{ base_path }}images/{{ article.country }}-{{ article.id }}{{ article.image_ext|default('.jpg') }}" alt="{{ article.title }}" class="card-img" loading="lazy" width="140" height="140">
+                {% else %}
+                <div class="card-img" role="img" aria-label="{{ article.title }}"></div>
+                {% endif %}
+                <div class="card-body">
+                    <h3>{{ article.title }}</h3>
+                    <div class="card-meta">
+                        <span class="badge badge-{{ article.country }}">{{ article.country|upper }}</span>
+                        <time datetime="{{ article.created_at[:10] }}">{{ article.created_at[:10] }}</time>
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {# ── Remaining articles in 3-column grid ── #}
+        {% set remaining = articles[3:] if articles|length >= 3 else articles %}
+        {% if remaining %}
+        <div class="grid grid-3" style="margin-top:1.5rem;">
+            {% for article in remaining %}
+            <a href="{{ base_path }}{{ article.country }}/article-{{ article.id }}.html" class="card scroll-fade">
                 {% if article.image_path and article.image_path != '[placeholder]' %}
                 <img src="{{ base_path }}images/{{ article.country }}-{{ article.id }}{{ article.image_ext|default('.jpg') }}" alt="{{ article.title }}" class="card-img" loading="lazy" width="400" height="225">
                 {% else %}
@@ -136,6 +181,7 @@
             </a>
             {% endfor %}
         </div>
+        {% endif %}
     </div>
 </section>
 {% else %}

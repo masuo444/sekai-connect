@@ -1,34 +1,37 @@
 <header class="site-header" itemscope itemtype="https://schema.org/WPHeader">
     <div class="container header-inner">
         <a href="{{ base_path }}index.html" class="logo" itemprop="url" aria-label="Connect-Sekai ホーム">
+            <span class="logo-mark" aria-hidden="true">CS</span>
             <span itemprop="name">Connect<span class="logo-accent">-</span>Sekai</span>
         </a>
         <nav class="site-nav" aria-label="{% if lang == 'ja' %}メインナビゲーション{% elif lang == 'ar' %}التنقل الرئيسي{% else %}Main navigation{% endif %}">
             <a href="{{ base_path }}uae/index.html"{% if current_country == 'uae' %} class="active" aria-current="page"{% endif %}>
-                <span class="nav-flag" aria-hidden="true">&#127462;&#127466;</span> UAE
+                <span class="nav-dot nav-dot--uae" aria-hidden="true"></span> UAE
             </a>
-            <span class="nav-sep" aria-hidden="true">|</span>
             <a href="{{ base_path }}saudi/index.html"{% if current_country == 'saudi' %} class="active" aria-current="page"{% endif %}>
-                <span class="nav-flag" aria-hidden="true">&#127480;&#127462;</span> Saudi
+                <span class="nav-dot nav-dot--saudi" aria-hidden="true"></span> Saudi
             </a>
-            <span class="nav-sep" aria-hidden="true">|</span>
             <a href="{{ base_path }}brunei/index.html"{% if current_country == 'brunei' %} class="active" aria-current="page"{% endif %}>
-                <span class="nav-flag" aria-hidden="true">&#127463;&#127475;</span> Brunei
+                <span class="nav-dot nav-dot--brunei" aria-hidden="true"></span> Brunei
             </a>
-            <span class="nav-sep" aria-hidden="true">|</span>
             <a href="{{ base_path }}japan/index.html"{% if current_country == 'japan' %} class="active" aria-current="page"{% endif %}>
-                <span class="nav-flag" aria-hidden="true">&#127471;&#127477;</span> Japan
+                <span class="nav-dot nav-dot--japan" aria-hidden="true"></span> Japan
             </a>
-            <span class="nav-sep" aria-hidden="true">|</span>
             <a href="{{ base_path }}tools/index.html"{% if page_type|default('') == 'tools' %} class="active" aria-current="page"{% endif %}>
                 {% if lang == 'ja' %}ツール{% elif lang == 'ar' %}أدوات{% else %}Tools{% endif %}
             </a>
         </nav>
-        <nav class="site-nav lang-switch" aria-label="{% if lang == 'ja' %}言語切替{% elif lang == 'ar' %}تبديل اللغة{% else %}Language switch{% endif %}">
-            <a href="{{ base_path }}ja/{{ lang_path|default('') }}"{% if lang == 'ja' %} class="active" aria-current="true"{% endif %} lang="ja">JP</a>
-            <a href="{{ base_path }}en/{{ lang_path|default('') }}"{% if lang == 'en' %} class="active" aria-current="true"{% endif %} lang="en">EN</a>
-            <a href="{{ base_path }}ar/{{ lang_path|default('') }}"{% if lang == 'ar' %} class="active" aria-current="true"{% endif %} lang="ar">AR</a>
-        </nav>
+        <div class="lang-dropdown" id="lang-dropdown">
+            <button class="lang-dropdown-btn" aria-expanded="false" aria-haspopup="true" aria-label="{% if lang == 'ja' %}言語切替{% elif lang == 'ar' %}تبديل اللغة{% else %}Language{% endif %}">
+                {% if lang == 'ja' %}JP{% elif lang == 'ar' %}AR{% else %}EN{% endif %}
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </button>
+            <div class="lang-dropdown-menu" role="menu">
+                <a href="{{ base_path }}ja/{{ lang_path|default('') }}" role="menuitem" lang="ja"{% if lang == 'ja' %} class="active"{% endif %}>日本語</a>
+                <a href="{{ base_path }}en/{{ lang_path|default('') }}" role="menuitem" lang="en"{% if lang == 'en' %} class="active"{% endif %}>English</a>
+                <a href="{{ base_path }}ar/{{ lang_path|default('') }}" role="menuitem" lang="ar"{% if lang == 'ar' %} class="active"{% endif %}>العربية</a>
+            </div>
+        </div>
 
         {# ── ハンバーガーメニューボタン (モバイル) ── #}
         <button class="mobile-menu-btn" aria-expanded="false" aria-controls="mobile-menu" aria-label="{% if lang == 'ja' %}メニューを開く{% elif lang == 'ar' %}افتح القائمة{% else %}Open menu{% endif %}">
@@ -42,16 +45,16 @@
     <div class="mobile-menu-overlay"></div>
     <nav class="mobile-menu" id="mobile-menu" aria-label="{% if lang == 'ja' %}モバイルメニュー{% elif lang == 'ar' %}قائمة الجوال{% else %}Mobile menu{% endif %}">
         <a href="{{ base_path }}uae/index.html"{% if current_country == 'uae' %} class="active"{% endif %}>
-            <span aria-hidden="true">&#127462;&#127466;</span> UAE
+            <span class="nav-dot nav-dot--uae" aria-hidden="true"></span> UAE
         </a>
         <a href="{{ base_path }}saudi/index.html"{% if current_country == 'saudi' %} class="active"{% endif %}>
-            <span aria-hidden="true">&#127480;&#127462;</span> Saudi Arabia
+            <span class="nav-dot nav-dot--saudi" aria-hidden="true"></span> Saudi Arabia
         </a>
         <a href="{{ base_path }}brunei/index.html"{% if current_country == 'brunei' %} class="active"{% endif %}>
-            <span aria-hidden="true">&#127463;&#127475;</span> Brunei
+            <span class="nav-dot nav-dot--brunei" aria-hidden="true"></span> Brunei
         </a>
         <a href="{{ base_path }}japan/index.html"{% if current_country == 'japan' %} class="active"{% endif %}>
-            <span aria-hidden="true">&#127471;&#127477;</span> Japan
+            <span class="nav-dot nav-dot--japan" aria-hidden="true"></span> Japan
         </a>
         <a href="{{ base_path }}tools/index.html">
             {% if lang == 'ja' %}ツール{% elif lang == 'ar' %}أدوات{% else %}Tools{% endif %}

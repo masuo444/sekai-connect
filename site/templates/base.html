@@ -118,6 +118,48 @@
         btn.addEventListener('click', toggle);
         if (overlay) overlay.addEventListener('click', toggle);
     })();
+
+    {# ── Language Dropdown JS ── #}
+    (function(){
+        var dropdown = document.getElementById('lang-dropdown');
+        if (!dropdown) return;
+        var btn = dropdown.querySelector('.lang-dropdown-btn');
+        btn.addEventListener('click', function(e){
+            e.stopPropagation();
+            var isOpen = dropdown.classList.toggle('is-open');
+            btn.setAttribute('aria-expanded', String(isOpen));
+        });
+        document.addEventListener('click', function(){
+            dropdown.classList.remove('is-open');
+            btn.setAttribute('aria-expanded', 'false');
+        });
+    })();
+
+    {# ── Scroll Fade-in (Intersection Observer) ── #}
+    (function(){
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        var els = document.querySelectorAll('.scroll-fade');
+        if (!els.length || !('IntersectionObserver' in window)) {
+            els.forEach(function(el){ el.classList.add('is-visible'); });
+            return;
+        }
+        var observer = new IntersectionObserver(function(entries){
+            entries.forEach(function(entry){
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+        els.forEach(function(el, i){
+            var parent = el.parentElement;
+            if (parent && parent.classList.contains('grid')) {
+                var idx = Array.prototype.indexOf.call(parent.children, el);
+                el.style.transitionDelay = (idx * 50) + 'ms';
+            }
+            observer.observe(el);
+        });
+    })();
     {# ── FAQ アコーディオン JS ── #}
     document.querySelectorAll('.faq-question').forEach(function(q){
         q.addEventListener('click', function(){

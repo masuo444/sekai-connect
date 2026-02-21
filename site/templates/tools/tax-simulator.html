@@ -112,7 +112,7 @@
 <section class="section">
     <div class="container">
         <div class="tool-disclaimer">
-            <p>{% if lang == 'ja' %}※ 本シミュレーターは概算です。実際の税額は個人の状況により異なります。正確な税務アドバイスは税理士にご相談ください。データは2024年時点の税制に基づいています。{% elif lang == 'ar' %}※ هذا المحاكي تقديري. استشر مستشارًا ضريبيًا للحصول على نصيحة دقيقة.{% else %}※ This simulator provides estimates only. Actual tax amounts vary by individual circumstances. Please consult a tax advisor for accurate advice. Data is based on 2024 tax regulations.{% endif %}</p>
+            <p>{% if lang == 'ja' %}※ 本シミュレーターの計算結果は概算であり、税務上の助言を構成するものではありません。所得控除・扶養控除・租税条約の適用等、個人の状況によって実際の税額は大きく異なります。具体的な税務判断は必ず税理士または公認会計士にご相談ください。データは{{ current_year|default('2026') }}年2月時点の各国税制に基づいています。{% elif lang == 'ar' %}※ نتائج هذا المحاكي تقديرية ولا تشكل استشارة ضريبية. تختلف المبالغ الفعلية حسب ظروفك الشخصية. يرجى استشارة مستشار ضريبي معتمد. البيانات محدثة حتى {{ current_year|default('2026') }}.{% else %}※ Results are estimates and do not constitute tax advice. Actual amounts vary based on deductions, dependents, and applicable tax treaties. Consult a qualified tax advisor for specific guidance. Data reflects tax regulations as of {{ current_year|default('2026') }}.{% endif %}</p>
         </div>
     </div>
 </section>
