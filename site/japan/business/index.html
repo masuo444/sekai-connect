@@ -87,8 +87,6 @@
     
 
     
-    
-
 <script type="application/ld+json">
 {
     "@context": "https://schema.org",
@@ -106,9 +104,6 @@
 
 
 
-
-
-    
     
 </head>
 <body>
@@ -147,7 +142,6 @@
             </div>
         </div>
 
-        
         <button class="mobile-menu-btn" aria-expanded="false" aria-controls="mobile-menu" aria-label="メニューを開く">
             <span class="hamburger-line"></span>
             <span class="hamburger-line"></span>
@@ -155,7 +149,6 @@
         </button>
     </div>
 
-    
     <div class="mobile-menu-overlay"></div>
     <nav class="mobile-menu" id="mobile-menu" aria-label="モバイルメニュー">
         <a href="../../uae/index.html">
@@ -210,8 +203,8 @@
 </nav>
 
 
-<section class="hero hero-japan">
-    <div class="container">
+<section class="hero hero-country hero-japan">
+    <div class="hero-content">
         <h1>Connect Japan</h1>
         <p>ビジネス・テクノロジー・アニメ・漫画</p>
     </div>
@@ -289,7 +282,6 @@
         <h2 class="section-title">最新記事</h2>
 
         
-        
         <div class="magazine-grid">
             <a href="../../japan/article-125.html" class="card card-feature scroll-fade">
                 
@@ -338,7 +330,6 @@
         </div>
         
 
-        
         
         
         <div class="grid grid-3" style="margin-top:1.5rem;">
@@ -554,9 +545,8 @@
     <footer class="site-footer" itemscope itemtype="https://schema.org/Organization">
     <div class="container">
         <div class="footer-grid">
-            
             <div class="footer-col">
-                <p class="footer-brand" itemprop="name">Connect<span class="logo-accent">-</span>Sekai</p>
+                <p class="footer-brand">Connect<span class="logo-accent">-</span>Sekai</p>
                 <p class="footer-desc" itemprop="description">
                     日本とUAE・サウジアラビア・ブルネイを繋ぐビジネスメディア
                     
@@ -575,7 +565,6 @@
                 <meta itemprop="url" content="https://connect-sekai.com">
             </div>
 
-            
             <div class="footer-col">
                 <p class="footer-col-title">エリア</p>
                 <nav class="footer-links" aria-label="エリアリンク">
@@ -586,7 +575,6 @@
                 </nav>
             </div>
 
-            
             <div class="footer-col">
                 <p class="footer-col-title">ツール</p>
                 <nav class="footer-links" aria-label="ツールリンク">
@@ -597,7 +585,6 @@
                 </nav>
             </div>
 
-            
             <div class="footer-col">
                 <p class="footer-col-title">会社情報</p>
                 <nav class="footer-links" aria-label="フッターナビゲーション">
@@ -632,8 +619,8 @@
         </div>
     </div>
 
-    
     <script>
+    
     (function(){
         var btn = document.querySelector('.mobile-menu-btn');
         var menu = document.querySelector('.mobile-menu');
@@ -668,6 +655,21 @@
 
     
     (function(){
+        var header = document.querySelector('.site-header');
+        if (!header) return;
+        function onScroll() {
+            if (window.scrollY > 50) {
+                header.classList.add('is-scrolled');
+            } else {
+                header.classList.remove('is-scrolled');
+            }
+        }
+        window.addEventListener('scroll', onScroll, { passive: true });
+        onScroll();
+    })();
+
+    
+    (function(){
         if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
         var els = document.querySelectorAll('.scroll-fade');
         if (!els.length || !('IntersectionObserver' in window)) {
@@ -681,16 +683,33 @@
                     observer.unobserve(entry.target);
                 }
             });
-        }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+        }, { threshold: 0.08, rootMargin: '0px 0px -60px 0px' });
         els.forEach(function(el, i){
             var parent = el.parentElement;
             if (parent && parent.classList.contains('grid')) {
                 var idx = Array.prototype.indexOf.call(parent.children, el);
-                el.style.transitionDelay = (idx * 50) + 'ms';
+                el.style.transitionDelay = (idx * 80) + 'ms';
             }
             observer.observe(el);
         });
     })();
+
+    
+    (function(){
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        var els = document.querySelectorAll('.text-reveal');
+        if (!els.length || !('IntersectionObserver' in window)) return;
+        var observer = new IntersectionObserver(function(entries){
+            entries.forEach(function(entry){
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+        els.forEach(function(el){ observer.observe(el); });
+    })();
+
     
     document.querySelectorAll('.faq-question').forEach(function(q){
         q.addEventListener('click', function(){

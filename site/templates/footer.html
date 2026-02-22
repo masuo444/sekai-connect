@@ -1,9 +1,8 @@
 <footer class="site-footer" itemscope itemtype="https://schema.org/Organization">
     <div class="container">
         <div class="footer-grid">
-            {# ── ブランド ── #}
             <div class="footer-col">
-                <p class="footer-brand" itemprop="name">Connect<span class="logo-accent">-</span>Sekai</p>
+                <p class="footer-brand">Connect<span class="logo-accent">-</span>Sekai</p>
                 <p class="footer-desc" itemprop="description">
                     {% if lang == 'ja' %}日本とUAE・サウジアラビア・ブルネイを繋ぐビジネスメディア
                     {% elif lang == 'ar' %}منصة إعلامية تربط اليابان بالإمارات والسعودية وبروناي
@@ -23,7 +22,6 @@
                 <meta itemprop="url" content="{{ site_url|default('https://connect-sekai.com') }}">
             </div>
 
-            {# ── エリア ── #}
             <div class="footer-col">
                 <p class="footer-col-title">{% if lang == 'ja' %}エリア{% elif lang == 'ar' %}المناطق{% else %}REGIONS{% endif %}</p>
                 <nav class="footer-links" aria-label="{% if lang == 'ja' %}エリアリンク{% elif lang == 'ar' %}روابط المناطق{% else %}Region links{% endif %}">
@@ -34,7 +32,6 @@
                 </nav>
             </div>
 
-            {# ── ツール ── #}
             <div class="footer-col">
                 <p class="footer-col-title">{% if lang == 'ja' %}ツール{% elif lang == 'ar' %}الأدوات{% else %}TOOLS{% endif %}</p>
                 <nav class="footer-links" aria-label="{% if lang == 'ja' %}ツールリンク{% elif lang == 'ar' %}روابط الأدوات{% else %}Tool links{% endif %}">
@@ -45,7 +42,6 @@
                 </nav>
             </div>
 
-            {# ── 会社情報 ── #}
             <div class="footer-col">
                 <p class="footer-col-title">{% if lang == 'ja' %}会社情報{% elif lang == 'ar' %}الشركة{% else %}COMPANY{% endif %}</p>
                 <nav class="footer-links" aria-label="{% if lang == 'ja' %}フッターナビゲーション{% elif lang == 'ar' %}تنقل التذييل{% else %}Footer navigation{% endif %}">

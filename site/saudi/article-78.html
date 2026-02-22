@@ -94,8 +94,6 @@
     
 
     
-    
-
 <script type="application/ld+json">
 {
     "@context": "https://schema.org",
@@ -128,8 +126,6 @@
 }
 </script>
 
-
-    
     
 
 <meta property="article:published_time" content="2026-02-20T18:20:49.736712+00:00">
@@ -175,7 +171,6 @@
             </div>
         </div>
 
-        
         <button class="mobile-menu-btn" aria-expanded="false" aria-controls="mobile-menu" aria-label="メニューを開く">
             <span class="hamburger-line"></span>
             <span class="hamburger-line"></span>
@@ -183,7 +178,6 @@
         </button>
     </div>
 
-    
     <div class="mobile-menu-overlay"></div>
     <nav class="mobile-menu" id="mobile-menu" aria-label="モバイルメニュー">
         <a href="../uae/index.html">
@@ -244,15 +238,19 @@
 </nav>
 
 
+
+
+<div class="article-hero">
+    <img src="../images/saudi-78.jpg" alt="初めてでも安心！サウジアラビア安全・マナー完全ガイド（服装・宗教・撮影・女性旅）" itemprop="image" loading="eager">
+    <div class="article-hero-overlay"></div>
+</div>
+
+
 <section class="section">
     <div class="container">
         <a href="../saudi/index.html" class="article-back">&larr; コネクトサウジ</a>
 
         <article itemscope itemtype="https://schema.org/NewsArticle">
-            
-            <img src="../images/saudi-78.jpg" alt="初めてでも安心！サウジアラビア安全・マナー完全ガイド（服装・宗教・撮影・女性旅）" class="article-hero-img" itemprop="image" width="1120" height="480">
-            
-
             <div class="article-header">
                 <h1 itemprop="headline">初めてでも安心！サウジアラビア安全・マナー完全ガイド（服装・宗教・撮影・女性旅）</h1>
                 <div class="card-meta article-meta">
@@ -370,7 +368,7 @@
             <h2 class="section-title">関連記事</h2>
             <div class="grid grid-3">
                 
-                <a href="../uae/article-107.html" class="card">
+                <a href="../uae/article-107.html" class="card scroll-fade">
                     
                     <img src="../images/uae-107.jpg" alt="アブダビの「案件製造機」に330億ドル級の巨人が合流——UAEが世界資本を引き寄せる新しい磁力" class="card-img" loading="lazy" width="400" height="225">
                     
@@ -384,7 +382,7 @@
                     </div>
                 </a>
                 
-                <a href="../saudi/article-80.html" class="card">
+                <a href="../saudi/article-80.html" class="card scroll-fade">
                     
                     <img src="../images/saudi-80.jpg" alt="サウジアラビア観光スポット完全ガイド（NEOM・アルウラ・紅海リゾートから歴史地区まで）" class="card-img" loading="lazy" width="400" height="225">
                     
@@ -398,7 +396,7 @@
                     </div>
                 </a>
                 
-                <a href="../uae/article-69.html" class="card">
+                <a href="../uae/article-69.html" class="card scroll-fade">
                     
                     <img src="../images/uae-69.jpg" alt="UAEが示す「1.5兆ドル投資」とドバイ不動産の次の一手――資本が集まる中東ハブの現在地" class="card-img" loading="lazy" width="400" height="225">
                     
@@ -422,9 +420,8 @@
     <footer class="site-footer" itemscope itemtype="https://schema.org/Organization">
     <div class="container">
         <div class="footer-grid">
-            
             <div class="footer-col">
-                <p class="footer-brand" itemprop="name">Connect<span class="logo-accent">-</span>Sekai</p>
+                <p class="footer-brand">Connect<span class="logo-accent">-</span>Sekai</p>
                 <p class="footer-desc" itemprop="description">
                     日本とUAE・サウジアラビア・ブルネイを繋ぐビジネスメディア
                     
@@ -443,7 +440,6 @@
                 <meta itemprop="url" content="https://connect-sekai.com">
             </div>
 
-            
             <div class="footer-col">
                 <p class="footer-col-title">エリア</p>
                 <nav class="footer-links" aria-label="エリアリンク">
@@ -454,7 +450,6 @@
                 </nav>
             </div>
 
-            
             <div class="footer-col">
                 <p class="footer-col-title">ツール</p>
                 <nav class="footer-links" aria-label="ツールリンク">
@@ -465,7 +460,6 @@
                 </nav>
             </div>
 
-            
             <div class="footer-col">
                 <p class="footer-col-title">会社情報</p>
                 <nav class="footer-links" aria-label="フッターナビゲーション">
@@ -500,8 +494,8 @@
         </div>
     </div>
 
-    
     <script>
+    
     (function(){
         var btn = document.querySelector('.mobile-menu-btn');
         var menu = document.querySelector('.mobile-menu');
@@ -536,6 +530,21 @@
 
     
     (function(){
+        var header = document.querySelector('.site-header');
+        if (!header) return;
+        function onScroll() {
+            if (window.scrollY > 50) {
+                header.classList.add('is-scrolled');
+            } else {
+                header.classList.remove('is-scrolled');
+            }
+        }
+        window.addEventListener('scroll', onScroll, { passive: true });
+        onScroll();
+    })();
+
+    
+    (function(){
         if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
         var els = document.querySelectorAll('.scroll-fade');
         if (!els.length || !('IntersectionObserver' in window)) {
@@ -549,16 +558,33 @@
                     observer.unobserve(entry.target);
                 }
             });
-        }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+        }, { threshold: 0.08, rootMargin: '0px 0px -60px 0px' });
         els.forEach(function(el, i){
             var parent = el.parentElement;
             if (parent && parent.classList.contains('grid')) {
                 var idx = Array.prototype.indexOf.call(parent.children, el);
-                el.style.transitionDelay = (idx * 50) + 'ms';
+                el.style.transitionDelay = (idx * 80) + 'ms';
             }
             observer.observe(el);
         });
     })();
+
+    
+    (function(){
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        var els = document.querySelectorAll('.text-reveal');
+        if (!els.length || !('IntersectionObserver' in window)) return;
+        var observer = new IntersectionObserver(function(entries){
+            entries.forEach(function(entry){
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+        els.forEach(function(el){ observer.observe(el); });
+    })();
+
     
     document.querySelectorAll('.faq-question').forEach(function(q){
         q.addEventListener('click', function(){

@@ -94,8 +94,6 @@
     
 
     
-    
-
 <script type="application/ld+json">
 {
     "@context": "https://schema.org",
@@ -128,8 +126,6 @@
 }
 </script>
 
-
-    
     
 
 <meta property="article:published_time" content="2026-02-20T18:29:31.966063+00:00">
@@ -175,7 +171,6 @@
             </div>
         </div>
 
-        
         <button class="mobile-menu-btn" aria-expanded="false" aria-controls="mobile-menu" aria-label="メニューを開く">
             <span class="hamburger-line"></span>
             <span class="hamburger-line"></span>
@@ -183,7 +178,6 @@
         </button>
     </div>
 
-    
     <div class="mobile-menu-overlay"></div>
     <nav class="mobile-menu" id="mobile-menu" aria-label="モバイルメニュー">
         <a href="../uae/index.html">
@@ -244,15 +238,19 @@
 </nav>
 
 
+
+
+<div class="article-hero">
+    <img src="../images/brunei-93.jpg" alt="空飛ぶ宮殿から見える、ブルネイ王室文化とハラール×日本の可能性" itemprop="image" loading="eager">
+    <div class="article-hero-overlay"></div>
+</div>
+
+
 <section class="section">
     <div class="container">
         <a href="../brunei/index.html" class="article-back">&larr; コネクトブルネイ</a>
 
         <article itemscope itemtype="https://schema.org/NewsArticle">
-            
-            <img src="../images/brunei-93.jpg" alt="空飛ぶ宮殿から見える、ブルネイ王室文化とハラール×日本の可能性" class="article-hero-img" itemprop="image" width="1120" height="480">
-            
-
             <div class="article-header">
                 <h1 itemprop="headline">空飛ぶ宮殿から見える、ブルネイ王室文化とハラール×日本の可能性</h1>
                 <div class="card-meta article-meta">
@@ -360,7 +358,7 @@
             <h2 class="section-title">関連記事</h2>
             <div class="grid grid-3">
                 
-                <a href="../brunei/article-120.html" class="card">
+                <a href="../brunei/article-120.html" class="card scroll-fade">
                     
                     <img src="../images/brunei-120.jpg" alt="遠い王国が米国の飛行機会社と高級ホテルを持つ理由――ブルネイ王室とハラールが映す「静かな富」の正体" class="card-img" loading="lazy" width="400" height="225">
                     
@@ -374,7 +372,7 @@
                     </div>
                 </a>
                 
-                <a href="../brunei/article-119.html" class="card">
+                <a href="../brunei/article-119.html" class="card scroll-fade">
                     
                     <img src="../images/brunei-119.jpg" alt="王室の静謐とハラールの信頼が出会う国ブルネイ——日本の伝統工芸が響き合う新しい富裕市場" class="card-img" loading="lazy" width="400" height="225">
                     
@@ -388,7 +386,7 @@
                     </div>
                 </a>
                 
-                <a href="../brunei/article-118.html" class="card">
+                <a href="../brunei/article-118.html" class="card scroll-fade">
                     
                     <img src="../images/brunei-118.jpg" alt="王室の空飛ぶ宮殿とハラールの品格──富裕国ブルネイが日本に示す「贅沢」の新基準" class="card-img" loading="lazy" width="400" height="225">
                     
@@ -412,9 +410,8 @@
     <footer class="site-footer" itemscope itemtype="https://schema.org/Organization">
     <div class="container">
         <div class="footer-grid">
-            
             <div class="footer-col">
-                <p class="footer-brand" itemprop="name">Connect<span class="logo-accent">-</span>Sekai</p>
+                <p class="footer-brand">Connect<span class="logo-accent">-</span>Sekai</p>
                 <p class="footer-desc" itemprop="description">
                     日本とUAE・サウジアラビア・ブルネイを繋ぐビジネスメディア
                     
@@ -433,7 +430,6 @@
                 <meta itemprop="url" content="https://connect-sekai.com">
             </div>
 
-            
             <div class="footer-col">
                 <p class="footer-col-title">エリア</p>
                 <nav class="footer-links" aria-label="エリアリンク">
@@ -444,7 +440,6 @@
                 </nav>
             </div>
 
-            
             <div class="footer-col">
                 <p class="footer-col-title">ツール</p>
                 <nav class="footer-links" aria-label="ツールリンク">
@@ -455,7 +450,6 @@
                 </nav>
             </div>
 
-            
             <div class="footer-col">
                 <p class="footer-col-title">会社情報</p>
                 <nav class="footer-links" aria-label="フッターナビゲーション">
@@ -490,8 +484,8 @@
         </div>
     </div>
 
-    
     <script>
+    
     (function(){
         var btn = document.querySelector('.mobile-menu-btn');
         var menu = document.querySelector('.mobile-menu');
@@ -526,6 +520,21 @@
 
     
     (function(){
+        var header = document.querySelector('.site-header');
+        if (!header) return;
+        function onScroll() {
+            if (window.scrollY > 50) {
+                header.classList.add('is-scrolled');
+            } else {
+                header.classList.remove('is-scrolled');
+            }
+        }
+        window.addEventListener('scroll', onScroll, { passive: true });
+        onScroll();
+    })();
+
+    
+    (function(){
         if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
         var els = document.querySelectorAll('.scroll-fade');
         if (!els.length || !('IntersectionObserver' in window)) {
@@ -539,16 +548,33 @@
                     observer.unobserve(entry.target);
                 }
             });
-        }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+        }, { threshold: 0.08, rootMargin: '0px 0px -60px 0px' });
         els.forEach(function(el, i){
             var parent = el.parentElement;
             if (parent && parent.classList.contains('grid')) {
                 var idx = Array.prototype.indexOf.call(parent.children, el);
-                el.style.transitionDelay = (idx * 50) + 'ms';
+                el.style.transitionDelay = (idx * 80) + 'ms';
             }
             observer.observe(el);
         });
     })();
+
+    
+    (function(){
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        var els = document.querySelectorAll('.text-reveal');
+        if (!els.length || !('IntersectionObserver' in window)) return;
+        var observer = new IntersectionObserver(function(entries){
+            entries.forEach(function(entry){
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+        els.forEach(function(el){ observer.observe(el); });
+    })();
+
     
     document.querySelectorAll('.faq-question').forEach(function(q){
         q.addEventListener('click', function(){

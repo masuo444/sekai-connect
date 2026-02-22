@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 
 {% block structured_data %}
-{# ── CollectionPage JSON-LD ── #}
 <script type="application/ld+json">
 {
     "@context": "https://schema.org",
@@ -17,7 +16,6 @@
 }
 </script>
 
-{# ── FAQPage JSON-LD (faq_items がある場合) ── #}
 {% if faq_items|default([]) %}
 <script type="application/ld+json">
 {
@@ -60,8 +58,8 @@
 </nav>
 {% endif %}
 
-<section class="hero hero-{{ country_key }}">
-    <div class="container">
+<section class="hero hero-country hero-{{ country_key }}">
+    <div class="hero-content">
         <h1>{{ country_info.name }}</h1>
         <p>{% if lang == 'ja' %}{{ country_info.description }}{% else %}{{ country_info.description_en|default(country_info.description) }}{% endif %}</p>
     </div>
@@ -114,7 +112,6 @@
     <div class="container">
         <h2 class="section-title">{% if lang == 'ja' %}最新記事{% elif lang == 'ar' %}أحدث المقالات{% else %}Latest Articles{% endif %}</h2>
 
-        {# ── Featured: first 3 articles in magazine layout ── #}
         {% if articles|length >= 3 %}
         <div class="magazine-grid">
             <a href="{{ base_path }}{{ articles[0].country }}/article-{{ articles[0].id }}.html" class="card card-feature scroll-fade">
@@ -155,7 +152,6 @@
         </div>
         {% endif %}
 
-        {# ── Remaining articles in 3-column grid ── #}
         {% set remaining = articles[3:] if articles|length >= 3 else articles %}
         {% if remaining %}
         <div class="grid grid-3" style="margin-top:1.5rem;">

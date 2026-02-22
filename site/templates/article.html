@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 
 {% block structured_data %}
-{# ── NewsArticle JSON-LD ── #}
 <script type="application/ld+json">
 {
     "@context": "https://schema.org",
@@ -64,15 +63,19 @@
 </nav>
 {% endif %}
 
+{# ── Hero Image (Full-bleed) ── #}
+{% if article.image_path and article.image_path != '[placeholder]' %}
+<div class="article-hero">
+    <img src="{{ base_path }}images/{{ article.country }}-{{ article.id }}{{ article.image_ext|default('.jpg') }}" alt="{{ article.title }}" itemprop="image" loading="eager">
+    <div class="article-hero-overlay"></div>
+</div>
+{% endif %}
+
 <section class="section">
     <div class="container">
         <a href="{{ base_path }}{{ article.country }}/index.html" class="article-back">&larr; {% if lang == 'ja' %}{{ country_info.name_ja|default(country_info.name|default('')) }}{% else %}{{ country_info.name|default('') }}{% endif %}</a>
 
         <article itemscope itemtype="https://schema.org/NewsArticle">
-            {% if article.image_path and article.image_path != '[placeholder]' %}
-            <img src="{{ base_path }}images/{{ article.country }}-{{ article.id }}{{ article.image_ext|default('.jpg') }}" alt="{{ article.title }}" class="article-hero-img" itemprop="image" width="1120" height="480">
-            {% endif %}
-
             <div class="article-header">
                 <h1 itemprop="headline">{{ article.title }}</h1>
                 <div class="card-meta article-meta">
@@ -90,7 +93,7 @@
                 </div>
             </div>
 
-            {# ── AIO用：この記事のポイント (サマリーボックス) ── #}
+            {# ── AIO用：この記事のポイント ── #}
             {% if article.excerpt %}
             <div class="article-summary">
                 <h2 class="article-summary-title">
@@ -164,7 +167,7 @@
             <h2 class="section-title">{% if lang == 'ja' %}関連記事{% elif lang == 'ar' %}مقالات ذات صلة{% else %}Related Articles{% endif %}</h2>
             <div class="grid grid-3">
                 {% for rel in related_articles[:3] %}
-                <a href="{{ base_path }}{{ rel.country }}/article-{{ rel.id }}.html" class="card">
+                <a href="{{ base_path }}{{ rel.country }}/article-{{ rel.id }}.html" class="card scroll-fade">
                     {% if rel.image_path and rel.image_path != '[placeholder]' %}
                     <img src="{{ base_path }}images/{{ rel.country }}-{{ rel.id }}{{ rel.image_ext|default('.jpg') }}" alt="{{ rel.title }}" class="card-img" loading="lazy" width="400" height="225">
                     {% else %}

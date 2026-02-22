@@ -33,7 +33,6 @@
             </div>
         </div>
 
-        {# ── ハンバーガーメニューボタン (モバイル) ── #}
         <button class="mobile-menu-btn" aria-expanded="false" aria-controls="mobile-menu" aria-label="{% if lang == 'ja' %}メニューを開く{% elif lang == 'ar' %}افتح القائمة{% else %}Open menu{% endif %}">
             <span class="hamburger-line"></span>
             <span class="hamburger-line"></span>
@@ -41,7 +40,6 @@
         </button>
     </div>
 
-    {# ── モバイルメニュー ── #}
     <div class="mobile-menu-overlay"></div>
     <nav class="mobile-menu" id="mobile-menu" aria-label="{% if lang == 'ja' %}モバイルメニュー{% elif lang == 'ar' %}قائمة الجوال{% else %}Mobile menu{% endif %}">
         <a href="{{ base_path }}uae/index.html"{% if current_country == 'uae' %} class="active"{% endif %}>

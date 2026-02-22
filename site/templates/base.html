@@ -14,7 +14,7 @@
     <link rel="alternate" hreflang="ar" href="{{ (site_url|default('https://connect-sekai.com')) ~ '/ar/' ~ (lang_path|default('')) }}">
     <link rel="alternate" hreflang="x-default" href="{{ (site_url|default('https://connect-sekai.com')) ~ '/ja/' ~ (lang_path|default('')) }}">
 
-    {# ── Open Graph (完全版) ── #}
+    {# ── Open Graph ── #}
     <meta property="og:type" content="{{ 'article' if page_type|default('website') == 'article' else 'website' }}">
     <meta property="og:title" content="{{ title }}">
     <meta property="og:description" content="{{ description|default('') }}">
@@ -39,7 +39,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="{{ base_path }}css/style.css">
 
-    {# ── JSON-LD: Organization (全ページ共通) ── #}
+    {# ── JSON-LD: Organization ── #}
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
@@ -52,7 +52,7 @@
     }
     </script>
 
-    {# ── JSON-LD: BreadcrumbList (パンくず) ── #}
+    {# ── JSON-LD: BreadcrumbList ── #}
     {% if breadcrumbs|default([]) %}
     <script type="application/ld+json">
     {
@@ -72,10 +72,7 @@
     </script>
     {% endif %}
 
-    {# ── ページ固有の構造化データ ── #}
     {% block structured_data %}{% endblock %}
-
-    {# ── ページ固有のhead追加 ── #}
     {% block extra_head %}{% endblock %}
 </head>
 <body>
@@ -85,7 +82,7 @@
     </main>
     {% include 'footer.html' %}
 
-    {# ── ニュースレター購読バー (全ページ共通) ── #}
+    {# ── ニュースレター購読バー ── #}
     <div class="newsletter-bar" id="newsletter-bar">
         <div class="container newsletter-bar-inner">
             <p class="newsletter-bar-text">{% if lang == 'ja' %}最新ニュースをメールでお届け{% elif lang == 'ar' %}احصل على آخر الأخبار عبر البريد{% else %}Get the latest news by email{% endif %}</p>
@@ -101,8 +98,8 @@
         </div>
     </div>
 
-    {# ── ハンバーガーメニュー JS ── #}
     <script>
+    {# ── ハンバーガーメニュー JS ── #}
     (function(){
         var btn = document.querySelector('.mobile-menu-btn');
         var menu = document.querySelector('.mobile-menu');
@@ -135,7 +132,22 @@
         });
     })();
 
-    {# ── Scroll Fade-in (Intersection Observer) ── #}
+    {# ── Header Scroll Effect ── #}
+    (function(){
+        var header = document.querySelector('.site-header');
+        if (!header) return;
+        function onScroll() {
+            if (window.scrollY > 50) {
+                header.classList.add('is-scrolled');
+            } else {
+                header.classList.remove('is-scrolled');
+            }
+        }
+        window.addEventListener('scroll', onScroll, { passive: true });
+        onScroll();
+    })();
+
+    {# ── Scroll Fade-in (IntersectionObserver) ── #}
     (function(){
         if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
         var els = document.querySelectorAll('.scroll-fade');
@@ -150,16 +162,33 @@
                     observer.unobserve(entry.target);
                 }
             });
-        }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+        }, { threshold: 0.08, rootMargin: '0px 0px -60px 0px' });
         els.forEach(function(el, i){
             var parent = el.parentElement;
             if (parent && parent.classList.contains('grid')) {
                 var idx = Array.prototype.indexOf.call(parent.children, el);
-                el.style.transitionDelay = (idx * 50) + 'ms';
+                el.style.transitionDelay = (idx * 80) + 'ms';
             }
             observer.observe(el);
         });
     })();
+
+    {# ── Text Reveal Animation ── #}
+    (function(){
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        var els = document.querySelectorAll('.text-reveal');
+        if (!els.length || !('IntersectionObserver' in window)) return;
+        var observer = new IntersectionObserver(function(entries){
+            entries.forEach(function(entry){
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+        els.forEach(function(el){ observer.observe(el); });
+    })();
+
     {# ── FAQ アコーディオン JS ── #}
     document.querySelectorAll('.faq-question').forEach(function(q){
         q.addEventListener('click', function(){

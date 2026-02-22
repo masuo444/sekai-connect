@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 
 {% block structured_data %}
-{# ── WebSite JSON-LD + SearchAction ── #}
 <script type="application/ld+json">
 {
     "@context": "https://schema.org",
@@ -23,12 +22,42 @@
 {% endblock %}
 
 {% block content %}
+{# ── Full-Bleed Hero ── #}
 <section class="hero">
-    <div class="container">
+    <div class="hero-bg">
+        {% if articles and articles[0].image_path and articles[0].image_path != '[placeholder]' %}
+        <img src="{{ base_path }}images/{{ articles[0].country }}-{{ articles[0].id }}{{ articles[0].image_ext|default('.jpg') }}" alt="{{ articles[0].title if articles else '' }}" loading="eager">
+        {% endif %}
+    </div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+        {% if articles %}
+        <span class="badge badge-{{ articles[0].country }}">{{ articles[0].country|upper }}</span>
+        <h1>{{ articles[0].title }}</h1>
+        <p>{{ articles[0].excerpt }}</p>
+        <a href="{{ base_path }}{{ articles[0].country }}/article-{{ articles[0].id }}.html" class="hero-cta">
+            {% if lang == 'ja' %}記事を読む{% elif lang == 'ar' %}اقرأ المقال{% else %}Read Article{% endif %} &rarr;
+        </a>
+        {% else %}
         <h1>Connect<span class="logo-accent">-</span>Sekai</h1>
         <p>{% if lang == 'ja' %}日本とUAE・サウジアラビア・ブルネイを繋ぐビジネスメディア{% elif lang == 'ar' %}منصة إعلامية تربط اليابان بالإمارات والسعودية وبروناي{% else %}Business Media Bridging Japan with UAE, Saudi Arabia &amp; Brunei{% endif %}</p>
+        {% endif %}
+    </div>
+    <div class="scroll-indicator">
+        <span>Scroll</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
     </div>
 </section>
+
+{# ── Marquee Band ── #}
+<div class="marquee-band">
+    <div class="marquee-track">
+        <span>UAE <span class="marquee-dot">&bull;</span> Saudi Arabia <span class="marquee-dot">&bull;</span> Brunei <span class="marquee-dot">&bull;</span> Japan</span>
+        <span>UAE <span class="marquee-dot">&bull;</span> Saudi Arabia <span class="marquee-dot">&bull;</span> Brunei <span class="marquee-dot">&bull;</span> Japan</span>
+        <span>UAE <span class="marquee-dot">&bull;</span> Saudi Arabia <span class="marquee-dot">&bull;</span> Brunei <span class="marquee-dot">&bull;</span> Japan</span>
+        <span>UAE <span class="marquee-dot">&bull;</span> Saudi Arabia <span class="marquee-dot">&bull;</span> Brunei <span class="marquee-dot">&bull;</span> Japan</span>
+    </div>
+</div>
 
 {# ── AIO用：サイト紹介テキスト ── #}
 <section class="section section-intro">
@@ -51,32 +80,128 @@
         <h2 class="section-title">{% if lang == 'ja' %}エリア{% elif lang == 'ar' %}المناطق{% else %}Regions{% endif %}</h2>
         <div class="grid grid-4">
             <a href="{{ base_path }}uae/" class="card country-card country-card--uae scroll-fade">
-                <div class="country-card-badge country-card-badge--uae">UAE</div>
-                <h3>Connect UAE</h3>
-                <p>{% if lang == 'ja' %}投資・不動産・ラグジュアリー{% else %}Investment, Real Estate & Luxury{% endif %}</p>
-                <span class="country-card-more">{% if lang == 'ja' %}もっと見る{% elif lang == 'ar' %}المزيد{% else %}View more{% endif %} &rarr;</span>
+                <div class="country-card-content">
+                    <div class="country-card-badge country-card-badge--uae">UAE</div>
+                    <h3>Connect UAE</h3>
+                    <p>{% if lang == 'ja' %}投資・不動産・ラグジュアリー{% else %}Investment, Real Estate & Luxury{% endif %}</p>
+                    <span class="country-card-more">{% if lang == 'ja' %}もっと見る{% elif lang == 'ar' %}المزيد{% else %}View more{% endif %} &rarr;</span>
+                </div>
             </a>
             <a href="{{ base_path }}saudi/" class="card country-card country-card--saudi scroll-fade">
-                <div class="country-card-badge country-card-badge--saudi">SAUDI</div>
-                <h3>Connect Saudi</h3>
-                <p>{% if lang == 'ja' %}ビジョン2030・メガプロジェクト{% else %}Vision 2030 & Mega Projects{% endif %}</p>
-                <span class="country-card-more">{% if lang == 'ja' %}もっと見る{% elif lang == 'ar' %}المزيد{% else %}View more{% endif %} &rarr;</span>
+                <div class="country-card-content">
+                    <div class="country-card-badge country-card-badge--saudi">SAUDI</div>
+                    <h3>Connect Saudi</h3>
+                    <p>{% if lang == 'ja' %}ビジョン2030・メガプロジェクト{% else %}Vision 2030 & Mega Projects{% endif %}</p>
+                    <span class="country-card-more">{% if lang == 'ja' %}もっと見る{% elif lang == 'ar' %}المزيد{% else %}View more{% endif %} &rarr;</span>
+                </div>
             </a>
             <a href="{{ base_path }}brunei/" class="card country-card country-card--brunei scroll-fade">
-                <div class="country-card-badge country-card-badge--brunei">BRUNEI</div>
-                <h3>Connect Brunei</h3>
-                <p>{% if lang == 'ja' %}王室・ハラール×日本・工芸{% else %}Royal Heritage, Halal & Craftsmanship{% endif %}</p>
-                <span class="country-card-more">{% if lang == 'ja' %}もっと見る{% elif lang == 'ar' %}المزيد{% else %}View more{% endif %} &rarr;</span>
+                <div class="country-card-content">
+                    <div class="country-card-badge country-card-badge--brunei">BRUNEI</div>
+                    <h3>Connect Brunei</h3>
+                    <p>{% if lang == 'ja' %}王室・ハラール×日本・工芸{% else %}Royal Heritage, Halal & Craftsmanship{% endif %}</p>
+                    <span class="country-card-more">{% if lang == 'ja' %}もっと見る{% elif lang == 'ar' %}المزيد{% else %}View more{% endif %} &rarr;</span>
+                </div>
             </a>
             <a href="{{ base_path }}japan/" class="card country-card country-card--japan scroll-fade">
-                <div class="country-card-badge country-card-badge--japan">JAPAN</div>
-                <h3>Connect Japan</h3>
-                <p>{% if lang == 'ja' %}ビジネス・テクノロジー・アニメ・漫画{% else %}Business, Technology, Anime & Manga{% endif %}</p>
-                <span class="country-card-more">{% if lang == 'ja' %}もっと見る{% elif lang == 'ar' %}المزيد{% else %}View more{% endif %} &rarr;</span>
+                <div class="country-card-content">
+                    <div class="country-card-badge country-card-badge--japan">JAPAN</div>
+                    <h3>Connect Japan</h3>
+                    <p>{% if lang == 'ja' %}ビジネス・テクノロジー・アニメ・漫画{% else %}Business, Technology, Anime & Manga{% endif %}</p>
+                    <span class="country-card-more">{% if lang == 'ja' %}もっと見る{% elif lang == 'ar' %}المزيد{% else %}View more{% endif %} &rarr;</span>
+                </div>
             </a>
         </div>
     </div>
 </section>
+
+{# ── 最新記事セクション (Magazine Layout) ── #}
+{% if articles %}
+<section class="section">
+    <div class="container">
+        <h2 class="section-title">{% if lang == 'ja' %}最新記事{% elif lang == 'ar' %}أحدث المقالات{% else %}Latest Articles{% endif %}</h2>
+
+        {% if articles|length >= 3 %}
+        <div class="magazine-grid">
+            <a href="{{ base_path }}{{ articles[0].country }}/article-{{ articles[0].id }}.html" class="card card-feature scroll-fade">
+                {% if articles[0].image_path and articles[0].image_path != '[placeholder]' %}
+                <img src="{{ base_path }}images/{{ articles[0].country }}-{{ articles[0].id }}{{ articles[0].image_ext|default('.jpg') }}" alt="{{ articles[0].title }}" class="card-img" loading="lazy" width="672" height="420">
+                {% else %}
+                <div class="card-img" role="img" aria-label="{{ articles[0].title }}"></div>
+                {% endif %}
+                <div class="card-body">
+                    <h3>{{ articles[0].title }}</h3>
+                    <p>{{ articles[0].excerpt }}</p>
+                    <div class="card-meta">
+                        <span class="badge badge-{{ articles[0].country }}">{{ articles[0].country|upper }}</span>
+                        {% if articles[0].genre and genres %}
+                        {% set g = genres[articles[0].genre] if articles[0].genre in genres else {} %}
+                        <span class="badge badge-genre-{{ g.slug|default('business') }}">{{ g.name_ja if lang|default('ja') == 'ja' else g.name_en|default(g.name_ja|default('')) }}</span>
+                        {% endif %}
+                        <time datetime="{{ articles[0].created_at[:10] }}">{{ articles[0].created_at[:10] }}</time>
+                    </div>
+                </div>
+            </a>
+            {% for article in articles[1:3] %}
+            <a href="{{ base_path }}{{ article.country }}/article-{{ article.id }}.html" class="card card-side scroll-fade">
+                {% if article.image_path and article.image_path != '[placeholder]' %}
+                <img src="{{ base_path }}images/{{ article.country }}-{{ article.id }}{{ article.image_ext|default('.jpg') }}" alt="{{ article.title }}" class="card-img" loading="lazy" width="140" height="140">
+                {% else %}
+                <div class="card-img" role="img" aria-label="{{ article.title }}"></div>
+                {% endif %}
+                <div class="card-body">
+                    <h3>{{ article.title }}</h3>
+                    <div class="card-meta">
+                        <span class="badge badge-{{ article.country }}">{{ article.country|upper }}</span>
+                        <time datetime="{{ article.created_at[:10] }}">{{ article.created_at[:10] }}</time>
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% if articles|length > 3 %}
+        <div class="grid grid-3" style="margin-top:1.5rem;">
+            {% for article in articles[3:9] %}
+            <a href="{{ base_path }}{{ article.country }}/article-{{ article.id }}.html" class="card scroll-fade">
+                {% if article.image_path and article.image_path != '[placeholder]' %}
+                <img src="{{ base_path }}images/{{ article.country }}-{{ article.id }}{{ article.image_ext|default('.jpg') }}" alt="{{ article.title }}" class="card-img" loading="lazy" width="400" height="225">
+                {% else %}
+                <div class="card-img" role="img" aria-label="{{ article.title }}"></div>
+                {% endif %}
+                <div class="card-body">
+                    <h3>{{ article.title }}</h3>
+                    <p>{{ article.excerpt }}</p>
+                    <div class="card-meta">
+                        <span class="badge badge-{{ article.country }}">{{ article.country|upper }}</span>
+                        {% if article.genre and genres %}
+                        {% set g = genres[article.genre] if article.genre in genres else {} %}
+                        <span class="badge badge-genre-{{ g.slug|default('business') }}">{{ g.name_ja if lang|default('ja') == 'ja' else g.name_en|default(g.name_ja|default('')) }}</span>
+                        {% endif %}
+                        <time datetime="{{ article.created_at[:10] }}">{{ article.created_at[:10] }}</time>
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <div class="more-links">
+            <a href="{{ base_path }}uae/" class="more-link more-link--uae">UAE {% if lang == 'ja' %}の記事をもっと見る{% else %}articles{% endif %} &rarr;</a>
+            <a href="{{ base_path }}saudi/" class="more-link more-link--saudi">Saudi {% if lang == 'ja' %}の記事をもっと見る{% else %}articles{% endif %} &rarr;</a>
+            <a href="{{ base_path }}brunei/" class="more-link more-link--brunei">Brunei {% if lang == 'ja' %}の記事をもっと見る{% else %}articles{% endif %} &rarr;</a>
+            <a href="{{ base_path }}japan/" class="more-link more-link--japan">Japan {% if lang == 'ja' %}の記事をもっと見る{% else %}articles{% endif %} &rarr;</a>
+        </div>
+    </div>
+</section>
+{% else %}
+<section class="section">
+    <div class="container">
+        <p class="placeholder">{% if lang == 'ja' %}記事はまだありません。{% elif lang == 'ar' %}لا توجد مقالات بعد.{% else %}No articles yet.{% endif %}</p>
+    </div>
+</section>
+{% endif %}
 
 {# ── ツールセクション ── #}
 <section class="section">
@@ -139,97 +264,4 @@
         </div>
     </div>
 </section>
-
-{# ── 最新記事セクション (Magazine Layout) ── #}
-{% if articles %}
-<section class="section">
-    <div class="container">
-        <h2 class="section-title">{% if lang == 'ja' %}最新記事{% elif lang == 'ar' %}أحدث المقالات{% else %}Latest Articles{% endif %}</h2>
-
-        {# ── Featured: first 3 articles in magazine layout ── #}
-        {% if articles|length >= 3 %}
-        <div class="magazine-grid">
-            {# Feature article (large) #}
-            <a href="{{ base_path }}{{ articles[0].country }}/article-{{ articles[0].id }}.html" class="card card-feature scroll-fade">
-                {% if articles[0].image_path and articles[0].image_path != '[placeholder]' %}
-                <img src="{{ base_path }}images/{{ articles[0].country }}-{{ articles[0].id }}{{ articles[0].image_ext|default('.jpg') }}" alt="{{ articles[0].title }}" class="card-img" loading="lazy" width="672" height="420">
-                {% else %}
-                <div class="card-img" role="img" aria-label="{{ articles[0].title }}"></div>
-                {% endif %}
-                <div class="card-body">
-                    <h3>{{ articles[0].title }}</h3>
-                    <p>{{ articles[0].excerpt }}</p>
-                    <div class="card-meta">
-                        <span class="badge badge-{{ articles[0].country }}">{{ articles[0].country|upper }}</span>
-                        {% if articles[0].genre and genres %}
-                        {% set g = genres[articles[0].genre] if articles[0].genre in genres else {} %}
-                        <span class="badge badge-genre-{{ g.slug|default('business') }}">{{ g.name_ja if lang|default('ja') == 'ja' else g.name_en|default(g.name_ja|default('')) }}</span>
-                        {% endif %}
-                        <time datetime="{{ articles[0].created_at[:10] }}">{{ articles[0].created_at[:10] }}</time>
-                    </div>
-                </div>
-            </a>
-            {# Side articles (horizontal cards) #}
-            {% for article in articles[1:3] %}
-            <a href="{{ base_path }}{{ article.country }}/article-{{ article.id }}.html" class="card card-side scroll-fade">
-                {% if article.image_path and article.image_path != '[placeholder]' %}
-                <img src="{{ base_path }}images/{{ article.country }}-{{ article.id }}{{ article.image_ext|default('.jpg') }}" alt="{{ article.title }}" class="card-img" loading="lazy" width="140" height="140">
-                {% else %}
-                <div class="card-img" role="img" aria-label="{{ article.title }}"></div>
-                {% endif %}
-                <div class="card-body">
-                    <h3>{{ article.title }}</h3>
-                    <div class="card-meta">
-                        <span class="badge badge-{{ article.country }}">{{ article.country|upper }}</span>
-                        <time datetime="{{ article.created_at[:10] }}">{{ article.created_at[:10] }}</time>
-                    </div>
-                </div>
-            </a>
-            {% endfor %}
-        </div>
-        {% endif %}
-
-        {# ── Remaining articles in 3-column grid ── #}
-        {% if articles|length > 3 %}
-        <div class="grid grid-3" style="margin-top:1.5rem;">
-            {% for article in articles[3:9] %}
-            <a href="{{ base_path }}{{ article.country }}/article-{{ article.id }}.html" class="card scroll-fade">
-                {% if article.image_path and article.image_path != '[placeholder]' %}
-                <img src="{{ base_path }}images/{{ article.country }}-{{ article.id }}{{ article.image_ext|default('.jpg') }}" alt="{{ article.title }}" class="card-img" loading="lazy" width="400" height="225">
-                {% else %}
-                <div class="card-img" role="img" aria-label="{{ article.title }}"></div>
-                {% endif %}
-                <div class="card-body">
-                    <h3>{{ article.title }}</h3>
-                    <p>{{ article.excerpt }}</p>
-                    <div class="card-meta">
-                        <span class="badge badge-{{ article.country }}">{{ article.country|upper }}</span>
-                        {% if article.genre and genres %}
-                        {% set g = genres[article.genre] if article.genre in genres else {} %}
-                        <span class="badge badge-genre-{{ g.slug|default('business') }}">{{ g.name_ja if lang|default('ja') == 'ja' else g.name_en|default(g.name_ja|default('')) }}</span>
-                        {% endif %}
-                        <time datetime="{{ article.created_at[:10] }}">{{ article.created_at[:10] }}</time>
-                    </div>
-                </div>
-            </a>
-            {% endfor %}
-        </div>
-        {% endif %}
-
-        {# ── 各国への「もっと見る」リンク ── #}
-        <div class="more-links">
-            <a href="{{ base_path }}uae/" class="more-link more-link--uae">UAE {% if lang == 'ja' %}の記事をもっと見る{% else %}articles{% endif %} &rarr;</a>
-            <a href="{{ base_path }}saudi/" class="more-link more-link--saudi">Saudi {% if lang == 'ja' %}の記事をもっと見る{% else %}articles{% endif %} &rarr;</a>
-            <a href="{{ base_path }}brunei/" class="more-link more-link--brunei">Brunei {% if lang == 'ja' %}の記事をもっと見る{% else %}articles{% endif %} &rarr;</a>
-            <a href="{{ base_path }}japan/" class="more-link more-link--japan">Japan {% if lang == 'ja' %}の記事をもっと見る{% else %}articles{% endif %} &rarr;</a>
-        </div>
-    </div>
-</section>
-{% else %}
-<section class="section">
-    <div class="container">
-        <p class="placeholder">{% if lang == 'ja' %}記事はまだありません。{% elif lang == 'ar' %}لا توجد مقالات بعد.{% else %}No articles yet.{% endif %}</p>
-    </div>
-</section>
-{% endif %}
 {% endblock %}
