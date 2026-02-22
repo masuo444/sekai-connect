@@ -9,6 +9,7 @@ Usage:
     python scripts/generate_thumbnails.py
     python scripts/generate_thumbnails.py --country uae
     python scripts/generate_thumbnails.py --country japan --limit 5
+    python scripts/generate_thumbnails.py --force          # regenerate all
 """
 
 from __future__ import annotations
@@ -44,12 +45,14 @@ def _load_genres_config() -> dict:
 def generate_all_thumbnails(
     country: str | None = None,
     limit: int | None = None,
+    force: bool = False,
 ) -> int:
-    """Generate thumbnails for articles with placeholder images.
+    """Generate thumbnails for articles.
 
     Args:
         country: Optional country filter (uae, saudi, brunei, japan).
         limit: Optional max number of thumbnails to generate.
+        force: If True, regenerate all thumbnails (not just placeholders).
 
     Returns:
         Number of thumbnails successfully generated.
@@ -58,12 +61,16 @@ def generate_all_thumbnails(
     db.init_db()
     genres_config = _load_genres_config()
 
-    # Query articles with placeholder or NULL images
+    # Query articles
     conn = db.conn
     clauses = [
         "a.status IN ('approved', 'scheduled', 'published')",
-        "(va.image_path = '[placeholder]' OR va.image_path IS NULL)",
     ]
+
+    # Only filter for placeholder images when NOT forcing regeneration
+    if not force:
+        clauses.append("(va.image_path = '[placeholder]' OR va.image_path IS NULL)")
+
     params: list = []
 
     if country:
@@ -94,7 +101,8 @@ def generate_all_thumbnails(
         db.close()
         return 0
 
-    logger.info("Found %d articles needing thumbnails.", len(rows))
+    logger.info("Found %d articles for thumbnail generation.%s", len(rows),
+                " (--force: regenerating all)" if force else "")
 
     success = 0
     for row in rows:
@@ -178,9 +186,19 @@ def main() -> None:
         default=None,
         help="Maximum number of thumbnails to generate.",
     )
+    parser.add_argument(
+        "--force",
+        action="store_true",
+        default=False,
+        help="Regenerate all thumbnails, even if they already exist.",
+    )
     args = parser.parse_args()
 
-    count = generate_all_thumbnails(country=args.country, limit=args.limit)
+    count = generate_all_thumbnails(
+        country=args.country,
+        limit=args.limit,
+        force=args.force,
+    )
     logger.info("Done. %d thumbnails generated.", count)
 
 
