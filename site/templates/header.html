@@ -27,9 +27,9 @@
                 <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
             </button>
             <div class="lang-dropdown-menu" role="menu">
-                <a href="{{ base_path }}ja/{{ lang_path|default('') }}" role="menuitem" lang="ja"{% if lang == 'ja' %} class="active"{% endif %}>日本語</a>
-                <a href="{{ base_path }}en/{{ lang_path|default('') }}" role="menuitem" lang="en"{% if lang == 'en' %} class="active"{% endif %}>English</a>
-                <a href="{{ base_path }}ar/{{ lang_path|default('') }}" role="menuitem" lang="ar"{% if lang == 'ar' %} class="active"{% endif %}>العربية</a>
+                <a href="{{ base_path }}{{ lang_path|default('index.html') }}" role="menuitem" lang="ja"{% if lang == 'ja' %} class="active"{% endif %}>日本語</a>
+                <a href="{{ base_path }}en/{{ lang_path|default('index.html') }}" role="menuitem" lang="en"{% if lang == 'en' %} class="active"{% endif %}>English</a>
+                <a href="{{ base_path }}ar/{{ lang_path|default('index.html') }}" role="menuitem" lang="ar"{% if lang == 'ar' %} class="active"{% endif %}>العربية</a>
             </div>
         </div>
 
@@ -60,8 +60,8 @@
             {% if lang == 'ja' %}ツール{% elif lang == 'ar' %}أدوات{% else %}Tools{% endif %}
         </a>
         <hr>
-        <a href="{{ base_path }}ja/{{ lang_path|default('') }}" lang="ja"{% if lang == 'ja' %} class="active"{% endif %}>日本語</a>
-        <a href="{{ base_path }}en/{{ lang_path|default('') }}" lang="en"{% if lang == 'en' %} class="active"{% endif %}>English</a>
-        <a href="{{ base_path }}ar/{{ lang_path|default('') }}" lang="ar"{% if lang == 'ar' %} class="active"{% endif %}>العربية</a>
+        <a href="{{ base_path }}{{ lang_path|default('index.html') }}" lang="ja"{% if lang == 'ja' %} class="active"{% endif %}>日本語</a>
+        <a href="{{ base_path }}en/{{ lang_path|default('index.html') }}" lang="en"{% if lang == 'en' %} class="active"{% endif %}>English</a>
+        <a href="{{ base_path }}ar/{{ lang_path|default('index.html') }}" lang="ar"{% if lang == 'ar' %} class="active"{% endif %}>العربية</a>
     </nav>
 </header>

@@ -323,6 +323,18 @@ class SiteGenerator:
     # ------------------------------------------------------------------
 
     @staticmethod
+    def _lang_path(rel_path: str, lang: str) -> str:
+        """Compute the language-independent page path for language switching.
+
+        Japanese pages live at root (no prefix), English under ``en/``,
+        Arabic under ``ar/``.  This strips the lang prefix so the header
+        template can build correct cross-language links.
+        """
+        if lang == "ja":
+            return rel_path
+        return rel_path[len(lang) + 1:]
+
+    @staticmethod
     def _make_breadcrumbs(items: list[tuple[str, str]]) -> list[dict]:
         """Generate breadcrumb list from (name, relative_url) tuples."""
         return [{"name": name, "url": f"{SITE_URL}/{url}"} for name, url in items]
@@ -395,6 +407,7 @@ class SiteGenerator:
             description="Business Media Bridging Japan with UAE, Saudi Arabia & Brunei",
             lang=lang,
             base_path=base_path,
+            lang_path=self._lang_path(rel_path, lang),
             countries=COUNTRIES,
             articles=articles,
             current_country=None,
@@ -446,6 +459,7 @@ class SiteGenerator:
                 description=country_info["description_en"],
                 lang=lang,
                 base_path=base_path,
+                lang_path=self._lang_path(rel_path, lang),
                 countries=COUNTRIES,
                 country_key=country_key,
                 country_info=country_info,
@@ -525,6 +539,7 @@ class SiteGenerator:
                 description=country_info["description_en"],
                 lang=lang,
                 base_path=base_path,
+                lang_path=self._lang_path(rel_path, lang),
                 countries=COUNTRIES,
                 country_key=country_key,
                 country_info=country_info,
@@ -609,6 +624,7 @@ class SiteGenerator:
                 description=country_info["description_en"],
                 lang=lang,
                 base_path=base_path,
+                lang_path=self._lang_path(rel_path, lang),
                 countries=COUNTRIES,
                 country_key=country_key,
                 country_info=country_info,
@@ -685,6 +701,7 @@ class SiteGenerator:
                 og_image=f"images/{country_key}-{article['id']}{article.get('image_ext', '.jpg')}",
                 lang=lang,
                 base_path=base_path,
+                lang_path=self._lang_path(rel_path, lang),
                 countries=COUNTRIES,
                 country_key=country_key,
                 country_info=country_info,
@@ -925,6 +942,7 @@ class SiteGenerator:
                 description=description,
                 lang=lang,
                 base_path=base_path,
+                lang_path=self._lang_path(rel_path, lang),
                 countries=COUNTRIES,
                 current_country=None,
                 genres=self.genres_config,
