@@ -698,7 +698,7 @@ class SiteGenerator:
             html = template.render(
                 title=article["title"],
                 description=_excerpt(article.get("body", ""), 160),
-                og_image=f"images/{country_key}-{article['id']}{article.get('image_ext', '.jpg')}",
+                og_image=f"{SITE_URL}/images/{country_key}-{article['id']}{article.get('image_ext', '.jpg')}",
                 lang=lang,
                 base_path=base_path,
                 lang_path=self._lang_path(rel_path, lang),
